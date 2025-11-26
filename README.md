@@ -1,19 +1,40 @@
-# Notes Taking App Challenge 📝
+# Notes Taking App 📝
 
-A modern, full-stack note-taking application built with Django (backend) and Next.js (frontend). This project demonstrates a clean, scalable architecture with a RESTful API and a responsive user interface.
+A modern, full-stack note-taking application built with Django (backend) and Next.js (frontend). This project demonstrates a clean, scalable architecture with JWT authentication, RESTful APIs, and a responsive user interface.
 
-## 🚀 Features
+## 🌟 Key Features
 
-- **Create, Read, Update, Delete (CRUD)** notes
-- **Categories** for organizing notes
-- **Priority levels** (High, Medium, Low) for note importance
-- **Tags** system for flexible note organization
-- **Pin/Unpin** notes for quick access
-- **Archive/Unarchive** notes to keep workspace clean
-- **Search functionality** across note titles, content, and tags
-- **Filtering** by category, priority, and status
+### 🔐 **Authentication & User Management**
+- **User Registration** with email and password
+- **Secure Login** with JWT token authentication
+- **Password visibility toggle** for better UX
+- **Automatic token refresh** to maintain sessions
+- **Protected routes** requiring authentication
+
+### 📝 **Note Management**
+- **Instant note creation** - notes are created immediately when clicked
+- **Auto-save functionality** - changes save automatically as you type
+- **Full CRUD operations** (Create, Read, Update, Delete)
+- **Rich note structure** with title, content, category, priority, and tags
+- **Pin/Unpin** important notes for quick access
+- **Archive/Unarchive** system to organize workspace
+- **Search functionality** across titles, content, and tags
+- **Filtering** by category, priority, and archived status
+
+### 🎨 **Categories & Organization**
+- **Default categories** created automatically: Random Thoughts, School, Personal
+- **Color-coded categories** for visual organization
+- **Category assignment** with visual feedback
+- **Note background colors** change based on category
+- **Category management** with create/edit/delete capabilities
+
+### 🎯 **User Experience**
+- **Empty state** for new users with helpful onboarding
 - **Responsive design** that works on desktop and mobile
 - **Real-time toast notifications** for user feedback
+- **Optimistic UI updates** for smooth interactions
+- **Relative date formatting** (today, yesterday, Nov 24)
+- **Preview cards** showing note summaries
 
 ## 🛠 Tech Stack
 
@@ -62,61 +83,57 @@ turbofuck/
 └── README.md             # This file
 ```
 
-## 🚦 Getting Started
+## 🚦 Quick Start
 
 ### Prerequisites
-- Python 3.11+
-- Node.js 18+
-- uv (Python package manager) - `curl -LsSf https://astral.sh/uv/install.sh | sh`
-- bun (JavaScript runtime) - `curl -fsSL https://bun.sh/install | bash`
+- **Python 3.11+** for Django backend
+- **Node.js 18+** for Next.js frontend
+- **uv** (Python package manager) - Install: `curl -LsSf https://astral.sh/uv/install.sh | sh`
+- **bun** (JavaScript runtime) - Install: `curl -fsSL https://bun.sh/install | bash`
 
-### Backend Setup
+### 🔧 Backend Setup (Django)
 
-1. **Navigate to backend directory**:
-   ```bash
-   cd backend
-   ```
+```bash
+cd backend
 
-2. **Install dependencies**:
-   ```bash
-   uv sync
-   ```
+# Install dependencies
+uv sync
 
-3. **Run migrations**:
-   ```bash
-   uv run python manage.py migrate
-   ```
+# Run database migrations
+uv run python manage.py migrate
 
-4. **Create a superuser (optional)**:
-   ```bash
-   uv run python manage.py createsuperuser
-   ```
+# (Optional) Create admin user
+uv run python manage.py createsuperuser
 
-5. **Start the development server**:
-   ```bash
-   uv run python manage.py runserver
-   ```
+# Start Django development server
+uv run python manage.py runserver
+```
 
-The backend will be available at `http://localhost:8000`
+✅ **Backend running at:** `http://localhost:8000`
+🔗 **Admin panel:** `http://localhost:8000/admin/`
+📊 **API endpoints:** `http://localhost:8000/api/`
 
-### Frontend Setup
+### 🎨 Frontend Setup (Next.js)
 
-1. **Navigate to frontend directory**:
-   ```bash
-   cd frontend
-   ```
+```bash
+cd frontend
 
-2. **Install dependencies**:
-   ```bash
-   bun install
-   ```
+# Install dependencies
+bun install
 
-3. **Start the development server**:
-   ```bash
-   bun run dev
-   ```
+# Start Next.js development server
+bun run dev
+```
 
-The frontend will be available at `http://localhost:3000`
+✅ **Frontend running at:** `http://localhost:3000`
+
+### 🎯 First Run Experience
+
+1. **Visit** `http://localhost:3000`
+2. **Sign up** with your email and password
+3. **Automatic setup**: Default categories are created
+4. **Start writing**: Click "Create Your First Note"
+5. **Explore**: Try categories, search, pin/archive features
 
 ## 🔌 API Endpoints
 

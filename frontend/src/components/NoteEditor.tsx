@@ -5,7 +5,7 @@ import {
   PencilIcon,
   CheckIcon,
   XMarkIcon,
-  PinIcon,
+  MapPinIcon,
   ArchiveBoxIcon,
   TagIcon,
   BookmarkIcon,
@@ -124,7 +124,7 @@ export default function NoteEditor({
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
               {note.is_pinned && (
-                <PinIcon className="h-5 w-5 text-blue-500" />
+                <MapPinIcon className="h-5 w-5 text-blue-500" />
               )}
               {note.is_archived && (
                 <ArchiveBoxIcon className="h-5 w-5 text-yellow-500" />

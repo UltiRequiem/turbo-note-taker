@@ -2,14 +2,14 @@
 
 import { useState } from 'react'
 import {
-  PinIcon,
+  MapPinIcon,
   ArchiveBoxIcon,
   TrashIcon,
   ClockIcon,
   TagIcon,
 } from '@heroicons/react/24/outline'
 import {
-  PinIcon as PinIconSolid,
+  MapPinIcon as MapPinIconSolid,
 } from '@heroicons/react/24/solid'
 import { Note } from '@/types'
 import clsx from 'clsx'
@@ -113,7 +113,7 @@ export default function NotesList({
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center space-x-2 mb-2">
                       {note.is_pinned && (
-                        <PinIconSolid className="h-4 w-4 text-blue-500" />
+                        <MapPinIconSolid className="h-4 w-4 text-blue-500" />
                       )}
                       <h3 className="text-sm font-medium text-gray-900 truncate">
                         {note.title || 'Untitled'}
@@ -179,7 +179,7 @@ export default function NotesList({
                         className="p-1 text-gray-400 hover:text-blue-500"
                         title={note.is_pinned ? 'Unpin note' : 'Pin note'}
                       >
-                        <PinIcon className="h-4 w-4" />
+                        <MapPinIcon className="h-4 w-4" />
                       </button>
                       <button
                         onClick={(e) => {
