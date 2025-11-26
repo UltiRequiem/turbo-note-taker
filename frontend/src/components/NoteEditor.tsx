@@ -11,6 +11,7 @@ import {
   BookmarkIcon,
 } from "@heroicons/react/24/outline";
 import { Note, Category } from "@/types";
+import { formatFullTimestamp } from "@/lib/dateUtils";
 import clsx from "clsx";
 
 interface NoteEditorProps {
@@ -177,6 +178,15 @@ export default function NoteEditor({
             )}
           </div>
         </div>
+
+        {/* Last edited timestamp */}
+        {note && (
+          <div className="px-6 pb-2">
+            <p className="text-xs text-gray-500">
+              Last edited: {formatFullTimestamp(note.updated_at)}
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Content */}

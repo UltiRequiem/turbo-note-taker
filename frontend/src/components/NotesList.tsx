@@ -10,6 +10,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { MapPinIcon as MapPinIconSolid } from "@heroicons/react/24/solid";
 import { Note } from "@/types";
+import { formatNoteDate } from "@/lib/dateUtils";
 import clsx from "clsx";
 
 interface NotesListProps {
@@ -46,23 +47,7 @@ export default function NotesList({
     }
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60);
-
-    if (diffInHours < 24) {
-      return date.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-    } else if (diffInHours < 168) {
-      // 7 days
-      return date.toLocaleDateString([], { weekday: "short" });
-    } else {
-      return date.toLocaleDateString([], { month: "short", day: "numeric" });
-    }
-  };
+  // Use the date formatting utility that follows requirements
 
   if (loading) {
     return (
@@ -154,7 +139,7 @@ export default function NotesList({
                       </div>
 
                       <time className="text-xs text-gray-400">
-                        {formatDate(note.updated_at)}
+                        {formatNoteDate(note.updated_at)}
                       </time>
                     </div>
 
