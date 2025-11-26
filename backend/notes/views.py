@@ -54,6 +54,12 @@ class NoteViewSet(viewsets.ModelViewSet):
 
         return queryset
 
+    def get_serializer_context(self):
+        """Ensure request is available in serializer context"""
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
+
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 

@@ -30,6 +30,15 @@ class NoteSerializer(serializers.ModelSerializer):
             'created_at', 'updated_at'
         ]
 
+    def validate_category(self, value):
+        """Ensure the category belongs to the current user"""
+        if value is not None:
+            request = self.context.get('request')
+            if request and hasattr(request, 'user'):
+                if not Category.objects.filter(id=value.id, user=request.user).exists():
+                    raise serializers.ValidationError("Category does not exist or does not belong to user.")
+        return value
+
     def create(self, validated_data):
         tag_list = validated_data.pop('tag_list', [])
         note = Note.objects.create(**validated_data)
