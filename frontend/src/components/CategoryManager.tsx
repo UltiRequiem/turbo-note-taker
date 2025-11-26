@@ -1,15 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { Category, CreateCategoryData } from "@/types";
 import {
-  PlusIcon,
+  CheckIcon,
   PencilIcon,
+  PlusIcon,
   TrashIcon,
   XMarkIcon,
-  CheckIcon,
 } from "@heroicons/react/24/outline";
-import { Category, CreateCategoryData } from "@/types";
 import clsx from "clsx";
+import { useState } from "react";
 
 interface CategoryManagerProps {
   categories: Category[];

@@ -1,0 +1,71 @@
+name: Backend Tests & Quality
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend-tests.yml'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend-tests.yml'
+
+jobs:
+  backend-tests:
+    name: Backend Tests & Quality
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
+
+    - name: Install dependencies
+      working-directory: ./backend
+      run: |
+        uv sync
+
+    - name: Run ruff linting and formatting
+      working-directory: ./backend
+      run: |
+        uv run ruff check .
+        uv run ruff format --check .
+
+    - name: Run Django system checks
+      working-directory: ./backend
+      run: |
+        uv run python manage.py check
+
+    - name: Run migrations check
+      working-directory: ./backend
+      run: |
+        uv run python manage.py makemigrations --check --dry-run
+
+    - name: Run tests
+      working-directory: ./backend
+      run: |
+        uv run python manage.py test
+      env:
+        DJANGO_SETTINGS_MODULE: notes_backend.settings
+
+    - name: Generate coverage report
+      working-directory: ./backend
+      run: |
+        uv add --dev coverage
+        uv run coverage run --source='.' manage.py test
+        uv run coverage xml
+
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./backend/coverage.xml
+        flags: backend
