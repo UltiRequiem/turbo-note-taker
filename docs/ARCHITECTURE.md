@@ -34,7 +34,7 @@ separation of concerns and robust security implementation.
                           │ ORM
                           │ SQL Queries
 ┌─────────────────────────▼───────────────────────────────────┐
-│                   Database (SQLite)                        │
+│            Database (SQLite - Dev & Production)            │
 │  ┌─────────────────┐ ┌─────────────────┐ ┌──────────────┐  │
 │  │     Users       │ │   Categories    │ │    Notes     │  │
 │  │                 │ │                 │ │              │  │
@@ -312,50 +312,66 @@ const CategoryManager = lazy(() => import("./CategoryManager"));
 └─────────────────┘    └─────────────────┘
 ```
 
-### Production Environment
+### Production Environment (Local Development Focus)
 
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   CDN/Vercel    │    │   Load Balancer │    │   PostgreSQL    │
-│                 │    │                 │    │                 │
-│ • Static Assets │    │ • Multiple      │    │ • Primary DB    │
-│ • Edge Caching  │    │   Django Procs  │    │ • Read Replicas │
-│ • Global Dist   │    │ • Health Checks │    │ • Backups       │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
+┌─────────────────┐    ┌─────────────────┐
+│   Frontend      │    │    Backend      │
+│   (Static)      │    │   (Server)      │
+│                 │    │                 │
+│ • Built Assets  │    │ • Django Prod   │
+│ • Optimized     │    │ • SQLite DB     │
+│ • Minified      │    │ • Production    │
+└─────────────────┘    └─────────────────┘
 ```
+
+**Note**: This application uses SQLite for both development and production to
+maintain simplicity and portability for interview/demo purposes.
 
 ### CI/CD Pipeline Architecture
 
 ```
-GitHub Commit
+GitHub Commit/PR
       │
       ▼
-┌─────────────────┐
-│   GitHub Actions │
-│                 │
-│ • Code Quality  │
-│ • Tests         │
-│ • Security Scan │
-│ • Build         │
-└─────┬───────────┘
-      │
-      ▼
-┌─────────────────┐
-│   Deployment    │
-│                 │
-│ • Docker Images │
-│ • Health Checks │
-│ • Rollback      │
-└─────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│                  GitHub Actions (4 Workflows)           │
+├─────────────────┬─────────────────┬─────────────────────┤
+│  Backend Tests  │ Frontend Tests  │  Integration Tests  │
+│                 │                 │                     │
+│ • Ruff Linting  │ • TypeScript    │ • SQLite Setup     │
+│ • Format Check  │ • Prettier      │ • Django Server    │
+│ • Django Tests  │ • Build Test    │ • E2E Placeholder  │
+│ • Coverage      │ • Artifacts     │ • Health Check     │
+└─────────────────┴─────────────────┴─────────────────────┤
+│                   Code Quality                          │
+│                                                         │
+│ • Performance Check  • PR Comments                     │
+└─────────────────────────────────────────────────────────┘
 ```
+
+**Key Features:**
+
+- **Path-based triggers**: Only runs relevant workflows when files change
+- **Parallel execution**: Multiple workflows run simultaneously
+- **SQLite consistency**: Same database in CI as local development
+- **Modern tooling**: uv (Python) + Bun (JavaScript)
+- **No deployment**: Local development focus for interview demo
 
 ## 📈 Scalability Considerations
 
-### Current Architecture Limits
+### Current Architecture Benefits
 
-- **SQLite**: Single-user database, not suitable for high concurrency
-- **Local State**: Frontend state doesn't persist across sessions
-- **No Caching**: Direct database queries without caching layer
+- **SQLite**: Lightweight, portable, zero-configuration database
+- **Single-file deployment**: Easy backup, migration, and distribution
+- **Excellent performance**: For interview/demo use cases with low concurrency
+- **No external dependencies**: Simplified deployment and setup
+
+### Potential Scaling Considerations (If Needed)
+
+- **SQLite**: Suitable for small to medium applications, single-writer scenarios
+- **Concurrent access**: SQLite handles multiple readers well, single writer
+- **File-based**: Easy to backup, replicate, and migrate
 
 ### Scaling Strategies
 

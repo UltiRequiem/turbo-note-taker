@@ -23,7 +23,7 @@ responsive UI design.
 
 - **Backend**: Django 5.2 + Django REST Framework + JWT
 - **Frontend**: Next.js 16 + TypeScript + Tailwind CSS
-- **Database**: SQLite (easily switchable to PostgreSQL)
+- **Database**: SQLite (development and production for portability)
 - **Package Managers**: uv (Python), bun (JavaScript)
 
 ---
@@ -202,17 +202,38 @@ src/
 - Code Quality: Performance checks and PR reports
 ```
 
-**Note**: This is a **local development project** for interview demonstration - no production deployment is included.
+**Note**: This is a **local development project** for interview demonstration -
+no production deployment is included.
+
+### Q: How is the CI/CD pipeline structured?
+
+**A:**
+
+**4 Focused Workflows:**
+
+1. **Backend Tests**: Ruff linting, Django tests, coverage
+2. **Frontend Tests**: TypeScript, Prettier, build verification
+3. **Integration Tests**: Full-stack SQLite testing
+4. **Code Quality**: Performance checks, PR automation
+
+**Key Benefits:**
+
+- **Path-based triggers**: Only relevant tests run on file changes
+- **Parallel execution**: Multiple workflows run simultaneously
+- **SQLite consistency**: Same database across all environments
+- **Modern tooling**: uv + Bun for fast package management
+- **Zero external dependencies**: No PostgreSQL, Redis, or cloud services needed
 
 ### Q: How did you handle environment configuration?
 
 **A:**
 
-- **Development**: Local SQLite, debug mode enabled
+- **Database**: SQLite for all environments (development, CI, production)
 - **Package Management**: uv (Python) and bun (JavaScript) for fast builds
 - **Environment Variables**: `.env.local` for frontend configuration
-- **Database**: SQLite for portability and simplicity
+- **Simplicity**: Single-file database, no external dependencies
 - **VS Code Setup**: Configured formatting and linting for seamless development
+- **CI Integration**: Consistent SQLite usage across GitHub Actions workflows
 
 ---
 
