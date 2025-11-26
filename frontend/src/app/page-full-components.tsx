@@ -18,6 +18,7 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [showArchived, setShowArchived] = useState(false);
+  const [showCategoryManager, setShowCategoryManager] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -153,6 +154,7 @@ export default function Home() {
         onSelectCategory={setSelectedCategory}
         showArchived={showArchived}
         onToggleArchived={setShowArchived}
+        onManageCategories={() => setShowCategoryManager(true)}
       />
 
       <div className="flex flex-1 flex-col">
