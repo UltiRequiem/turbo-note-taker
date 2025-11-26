@@ -30,3 +30,5 @@ server.log
 # Temporary files
 *.tmp
 *.temp
+
+frontend/.next/dev
