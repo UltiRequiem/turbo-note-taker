@@ -1,6 +1,7 @@
 # Complete Django Guide for the Notes App 🐍
 
-This guide explains all the Django concepts used in this notes application, perfect for someone learning Django.
+This guide explains all the Django concepts used in this notes application,
+perfect for someone learning Django.
 
 ## 📚 Table of Contents
 
@@ -43,7 +44,9 @@ backend/
 ```
 
 ### Key Concepts:
-- **Project vs App**: A project contains multiple apps. Apps are reusable components.
+
+- **Project vs App**: A project contains multiple apps. Apps are reusable
+  components.
 - **Separation of Concerns**: Each file has a specific purpose
 - **manage.py**: Your command-line interface to Django
 
@@ -107,6 +110,7 @@ class Note(models.Model):
 ```
 
 ### Model Field Types Explained:
+
 - **CharField**: Short text (max_length required)
 - **TextField**: Long text (no length limit)
 - **BooleanField**: True/False values
@@ -115,6 +119,7 @@ class Note(models.Model):
 - **choices**: Predefined options for a field
 
 ### Relationships:
+
 - **ForeignKey**: One-to-Many (User has many Notes)
 - **on_delete=CASCADE**: Delete related objects when parent is deleted
 - **on_delete=SET_NULL**: Set to NULL when parent is deleted
@@ -163,6 +168,7 @@ class NoteSerializer(serializers.ModelSerializer):
 ```
 
 ### Serializer Concepts:
+
 - **ModelSerializer**: Automatically creates fields from model
 - **SerializerMethodField**: Custom computed fields
 - **read_only=True**: Field only appears in output
@@ -250,6 +256,7 @@ def signup(request):
 ```
 
 ### Key Authentication Concepts:
+
 - **JWT**: JSON Web Tokens for stateless authentication
 - **@api_view**: Decorator to create API endpoints
 - **@permission_classes**: Control who can access endpoints
@@ -313,6 +320,7 @@ class NoteViewSet(viewsets.ModelViewSet):
 ```
 
 ### ViewSet Features:
+
 - **ModelViewSet**: Provides GET, POST, PUT, PATCH, DELETE automatically
 - **get_queryset()**: Filter data for current user
 - **perform_create()**: Modify object before saving
@@ -361,6 +369,7 @@ urlpatterns = [
 ```
 
 ### Generated URLs (by router):
+
 - **GET /api/notes/** - List all notes
 - **POST /api/notes/** - Create new note
 - **GET /api/notes/1/** - Get specific note
@@ -402,6 +411,7 @@ class NoteAdmin(admin.ModelAdmin):
 ```
 
 ### Admin Features:
+
 - **list_display**: Choose table columns
 - **search_fields**: Add search functionality
 - **list_filter**: Add sidebar filters
@@ -431,6 +441,7 @@ uv run python manage.py sqlmigrate notes 0001
 ```
 
 ### Migration Files:
+
 Located in `notes/migrations/` - these track all database changes over time.
 
 ---
@@ -488,6 +499,7 @@ CORS_ALLOWED_ORIGINS = [
 ## 🔧 Common Django Commands
 
 ### Development:
+
 ```bash
 # Start development server
 uv run python manage.py runserver
@@ -503,6 +515,7 @@ uv run python manage.py collectstatic
 ```
 
 ### Database:
+
 ```bash
 # Create migrations
 uv run python manage.py makemigrations
@@ -516,6 +529,7 @@ uv run python manage.py migrate
 ```
 
 ### App Management:
+
 ```bash
 # Create new app
 uv run python manage.py startapp newapp
@@ -532,25 +546,31 @@ uv run python manage.py check
 ## 🎯 Key Django Concepts Summary
 
 ### 1. **MVC Pattern**: Django uses Model-View-Template (similar to MVC)
-   - **Models**: Database structure
-   - **Views**: Business logic
-   - **Templates**: HTML (we use React instead)
+
+- **Models**: Database structure
+- **Views**: Business logic
+- **Templates**: HTML (we use React instead)
 
 ### 2. **DRY (Don't Repeat Yourself)**: Django automates common tasks
-   - Admin interface auto-generated from models
-   - URL routing with patterns
-   - Form handling and validation
+
+- Admin interface auto-generated from models
+- URL routing with patterns
+- Form handling and validation
 
 ### 3. **Security**: Django includes security by default
-   - SQL injection protection
-   - CSRF protection
-   - XSS protection
-   - Password hashing
+
+- SQL injection protection
+- CSRF protection
+- XSS protection
+- Password hashing
 
 ### 4. **Scalability**: Django grows with your app
-   - Database abstraction (PostgreSQL, MySQL, SQLite)
-   - Caching framework
-   - Middleware system
-   - Load balancing support
 
-This Django setup provides a solid foundation for any web application with authentication, API endpoints, admin interface, and database management all configured and ready to use!
+- Database abstraction (PostgreSQL, MySQL, SQLite)
+- Caching framework
+- Middleware system
+- Load balancing support
+
+This Django setup provides a solid foundation for any web application with
+authentication, API endpoints, admin interface, and database management all
+configured and ready to use!
