@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import {
   FolderIcon,
@@ -6,19 +6,19 @@ import {
   ArchiveBoxIcon,
   TagIcon,
   Cog6ToothIcon,
-  UserCircleIcon
-} from '@heroicons/react/24/outline'
-import { Category } from '@/types'
-import clsx from 'clsx'
+  UserCircleIcon,
+} from "@heroicons/react/24/outline";
+import { Category } from "@/types";
+import clsx from "clsx";
 
 interface SidebarProps {
-  categories: Category[]
-  selectedCategory: number | null
-  onSelectCategory: (categoryId: number | null) => void
-  showArchived: boolean
-  onToggleArchived: (showArchived: boolean) => void
-  onManageCategories: () => void
-  userEmail?: string
+  categories: Category[];
+  selectedCategory: number | null;
+  onSelectCategory: (categoryId: number | null) => void;
+  showArchived: boolean;
+  onToggleArchived: (showArchived: boolean) => void;
+  onManageCategories: () => void;
+  userEmail?: string;
 }
 
 export default function Sidebar({
@@ -31,14 +31,14 @@ export default function Sidebar({
   userEmail,
 }: SidebarProps) {
   return (
-    <div className="w-64 bg-white border-r border-gray-200 flex flex-col">
+    <div className="flex w-64 flex-col border-r border-gray-200 bg-white">
       {/* User Info */}
       {userEmail && (
-        <div className="p-4 border-b border-gray-200">
+        <div className="border-b border-gray-200 p-4">
           <div className="flex items-center space-x-3">
             <UserCircleIcon className="h-8 w-8 text-gray-400" />
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-medium text-gray-900 truncate">
+              <p className="truncate text-sm font-medium text-gray-900">
                 {userEmail}
               </p>
               <p className="text-xs text-gray-500">Active account</p>
@@ -52,34 +52,34 @@ export default function Sidebar({
           {/* All Notes */}
           <button
             onClick={() => {
-              onSelectCategory(null)
-              onToggleArchived(false)
+              onSelectCategory(null);
+              onToggleArchived(false);
             }}
             className={clsx(
-              'w-full flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors',
+              "flex w-full items-center rounded-md px-3 py-2 text-sm font-medium transition-colors",
               !selectedCategory && !showArchived
-                ? 'bg-blue-100 text-blue-700'
-                : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+                ? "bg-blue-100 text-blue-700"
+                : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
             )}
           >
-            <InboxIcon className="h-5 w-5 mr-3" />
+            <InboxIcon className="mr-3 h-5 w-5" />
             All Notes
           </button>
 
           {/* Archived Notes */}
           <button
             onClick={() => {
-              onSelectCategory(null)
-              onToggleArchived(true)
+              onSelectCategory(null);
+              onToggleArchived(true);
             }}
             className={clsx(
-              'w-full flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors',
+              "flex w-full items-center rounded-md px-3 py-2 text-sm font-medium transition-colors",
               showArchived
-                ? 'bg-blue-100 text-blue-700'
-                : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+                ? "bg-blue-100 text-blue-700"
+                : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
             )}
           >
-            <ArchiveBoxIcon className="h-5 w-5 mr-3" />
+            <ArchiveBoxIcon className="mr-3 h-5 w-5" />
             Archived
           </button>
         </nav>
@@ -88,13 +88,13 @@ export default function Sidebar({
       {/* Categories */}
       {categories.length > 0 && (
         <div className="px-4 pb-4">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+          <div className="mb-3 flex items-center justify-between">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-gray-500">
               Categories
             </h3>
             <button
               onClick={onManageCategories}
-              className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
+              className="p-1 text-gray-400 transition-colors hover:text-gray-600"
               title="Manage categories"
             >
               <Cog6ToothIcon className="h-4 w-4" />
@@ -105,18 +105,18 @@ export default function Sidebar({
               <button
                 key={category.id}
                 onClick={() => {
-                  onSelectCategory(category.id)
-                  onToggleArchived(false)
+                  onSelectCategory(category.id);
+                  onToggleArchived(false);
                 }}
                 className={clsx(
-                  'w-full flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors',
+                  "flex w-full items-center rounded-md px-3 py-2 text-sm font-medium transition-colors",
                   selectedCategory === category.id && !showArchived
-                    ? 'bg-blue-100 text-blue-700'
-                    : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+                    ? "bg-blue-100 text-blue-700"
+                    : "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
                 )}
               >
                 <div
-                  className="h-3 w-3 rounded-full mr-3 flex-shrink-0"
+                  className="mr-3 h-3 w-3 flex-shrink-0 rounded-full"
                   style={{ backgroundColor: category.color }}
                 />
                 <span className="truncate">{category.name}</span>
@@ -130,7 +130,7 @@ export default function Sidebar({
       )}
 
       {/* Footer */}
-      <div className="mt-auto p-4 border-t border-gray-200">
+      <div className="mt-auto border-t border-gray-200 p-4">
         <div className="flex items-center justify-between">
           <div className="text-xs text-gray-500">
             {categories.length} categories
@@ -138,7 +138,7 @@ export default function Sidebar({
           {categories.length === 0 && (
             <button
               onClick={onManageCategories}
-              className="text-xs text-blue-600 hover:text-blue-500 font-medium"
+              className="text-xs font-medium text-blue-600 hover:text-blue-500"
             >
               Create categories
             </button>
@@ -146,5 +146,5 @@ export default function Sidebar({
         </div>
       </div>
     </div>
-  )
+  );
 }

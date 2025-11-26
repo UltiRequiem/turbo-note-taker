@@ -36,15 +36,18 @@ frontend/
 ## 🔧 Key Files Explained
 
 ### `src/app/dashboard/page.tsx`
+
 **Purpose**: Main application interface - the heart of the user experience
 
 **Key Responsibilities**:
+
 - Authentication state management
 - Data fetching and state synchronization
 - User interactions and API calls
 - Component coordination and state sharing
 
 **Features**:
+
 - Real-time data synchronization
 - Optimistic UI updates
 - Error handling and user feedback
@@ -52,9 +55,11 @@ frontend/
 - Empty states for new users
 
 ### `src/components/NoteEditor.tsx`
+
 **Purpose**: Rich note editing interface with form validation
 
 **Features**:
+
 - Controlled form inputs with TypeScript
 - Real-time validation and error handling
 - Tag management with add/remove functionality
@@ -62,9 +67,11 @@ frontend/
 - Auto-save capabilities with optimistic updates
 
 ### `src/components/NotesList.tsx`
+
 **Purpose**: Displays notes in a clean, organized list format
 
 **Features**:
+
 - Virtual scrolling for performance
 - Hover states with action buttons
 - Priority indicators and category colors
@@ -72,9 +79,11 @@ frontend/
 - Pin/archive/delete actions
 
 ### `src/components/CategoryManager.tsx`
+
 **Purpose**: Full CRUD interface for category management
 
 **Features**:
+
 - Modal-based interface
 - Color picker with predefined options
 - Form validation and error handling
@@ -82,9 +91,11 @@ frontend/
 - Real-time category updates
 
 ### `src/lib/api.ts`
+
 **Purpose**: Centralized API client with authentication and error handling
 
 **Key Features**:
+
 - Axios-based HTTP client with interceptors
 - Automatic JWT token attachment
 - Token refresh mechanism

@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react";
 import {
   PencilIcon,
   CheckIcon,
@@ -9,17 +9,17 @@ import {
   ArchiveBoxIcon,
   TagIcon,
   BookmarkIcon,
-} from '@heroicons/react/24/outline'
-import { Note, Category } from '@/types'
-import clsx from 'clsx'
+} from "@heroicons/react/24/outline";
+import { Note, Category } from "@/types";
+import clsx from "clsx";
 
 interface NoteEditorProps {
-  note: Note | null
-  categories: Category[]
-  isEditing: boolean
-  onStartEditing: () => void
-  onStopEditing: () => void
-  onUpdateNote: (id: number, updates: Partial<Note>) => void
+  note: Note | null;
+  categories: Category[];
+  isEditing: boolean;
+  onStartEditing: () => void;
+  onStopEditing: () => void;
+  onUpdateNote: (id: number, updates: Partial<Note>) => void;
 }
 
 export default function NoteEditor({
@@ -30,82 +30,82 @@ export default function NoteEditor({
   onStopEditing,
   onUpdateNote,
 }: NoteEditorProps) {
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
-  const [priority, setPriority] = useState<'low' | 'medium' | 'high'>('medium')
-  const [categoryId, setCategoryId] = useState<number | null>(null)
-  const [tags, setTags] = useState<string[]>([])
-  const [tagInput, setTagInput] = useState('')
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [priority, setPriority] = useState<"low" | "medium" | "high">("medium");
+  const [categoryId, setCategoryId] = useState<number | null>(null);
+  const [tags, setTags] = useState<string[]>([]);
+  const [tagInput, setTagInput] = useState("");
 
   useEffect(() => {
     if (note) {
-      setTitle(note.title)
-      setContent(note.content)
-      setPriority(note.priority)
-      setCategoryId(note.category)
-      setTags(note.tag_list || [])
+      setTitle(note.title);
+      setContent(note.content);
+      setPriority(note.priority);
+      setCategoryId(note.category);
+      setTags(note.tag_list || []);
     }
-  }, [note])
+  }, [note]);
 
   const handleSave = () => {
-    if (!note) return
+    if (!note) return;
 
     onUpdateNote(note.id, {
-      title: title?.trim() || 'Untitled',
-      content: content?.trim() || '',
+      title: title?.trim() || "Untitled",
+      content: content?.trim() || "",
       priority,
       category: categoryId,
       tag_list: tags,
-    })
-    onStopEditing()
-  }
+    });
+    onStopEditing();
+  };
 
   const handleCancel = () => {
     if (note) {
-      setTitle(note.title)
-      setContent(note.content)
-      setPriority(note.priority)
-      setCategoryId(note.category)
-      setTags(note.tag_list || [])
+      setTitle(note.title);
+      setContent(note.content);
+      setPriority(note.priority);
+      setCategoryId(note.category);
+      setTags(note.tag_list || []);
     }
-    onStopEditing()
-  }
+    onStopEditing();
+  };
 
   const addTag = () => {
-    const tag = tagInput?.trim()
+    const tag = tagInput?.trim();
     if (tag && !tags.includes(tag)) {
-      setTags(prev => [...prev, tag])
-      setTagInput('')
+      setTags((prev) => [...prev, tag]);
+      setTagInput("");
     }
-  }
+  };
 
   const removeTag = (tagToRemove: string) => {
-    setTags(prev => prev.filter(tag => tag !== tagToRemove))
-  }
+    setTags((prev) => prev.filter((tag) => tag !== tagToRemove));
+  };
 
   const handleTagInputKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ',') {
-      e.preventDefault()
-      addTag()
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault();
+      addTag();
     }
-  }
+  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString([], {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    })
-  }
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
 
   if (!note) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-gray-50">
+      <div className="flex flex-1 items-center justify-center bg-gray-50">
         <div className="text-center">
-          <BookmarkIcon className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">
+          <BookmarkIcon className="mx-auto mb-4 h-16 w-16 text-gray-300" />
+          <h3 className="mb-2 text-lg font-medium text-gray-900">
             Select a note to view
           </h3>
           <p className="text-gray-500">
@@ -113,11 +113,11 @@ export default function NoteEditor({
           </p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
-    <div className="flex-1 flex flex-col bg-white">
+    <div className="flex flex-1 flex-col bg-white">
       {/* Header */}
       <div className="border-b border-gray-200 px-6 py-4">
         <div className="flex items-center justify-between">
@@ -135,9 +135,11 @@ export default function NoteEditor({
               <div className="flex items-center space-x-2">
                 <div
                   className="h-3 w-3 rounded-full"
-                  style={{ backgroundColor: note.category_color || '#3B82F6' }}
+                  style={{ backgroundColor: note.category_color || "#3B82F6" }}
                 />
-                <span className="text-sm text-gray-600">{note.category_name}</span>
+                <span className="text-sm text-gray-600">
+                  {note.category_name}
+                </span>
               </div>
             )}
 
@@ -151,25 +153,25 @@ export default function NoteEditor({
               <>
                 <button
                   onClick={handleSave}
-                  className="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded text-white bg-green-600 hover:bg-green-700"
+                  className="inline-flex items-center rounded border border-transparent bg-green-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-green-700"
                 >
-                  <CheckIcon className="h-4 w-4 mr-1" />
+                  <CheckIcon className="mr-1 h-4 w-4" />
                   Save
                 </button>
                 <button
                   onClick={handleCancel}
-                  className="inline-flex items-center px-3 py-1.5 border border-gray-300 text-sm font-medium rounded text-gray-700 bg-white hover:bg-gray-50"
+                  className="inline-flex items-center rounded border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
                 >
-                  <XMarkIcon className="h-4 w-4 mr-1" />
+                  <XMarkIcon className="mr-1 h-4 w-4" />
                   Cancel
                 </button>
               </>
             ) : (
               <button
                 onClick={onStartEditing}
-                className="inline-flex items-center px-3 py-1.5 border border-gray-300 text-sm font-medium rounded text-gray-700 bg-white hover:bg-gray-50"
+                className="inline-flex items-center rounded border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
               >
-                <PencilIcon className="h-4 w-4 mr-1" />
+                <PencilIcon className="mr-1 h-4 w-4" />
                 Edit
               </button>
             )}
@@ -178,19 +180,19 @@ export default function NoteEditor({
       </div>
 
       {/* Content */}
-      <div className="flex-1 p-6 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto p-6">
         {isEditing ? (
           <div className="space-y-6">
             {/* Title */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="mb-2 block text-sm font-medium text-gray-700">
                 Title
               </label>
               <input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
                 placeholder="Enter note title..."
               />
             </div>
@@ -198,13 +200,17 @@ export default function NoteEditor({
             {/* Category and Priority */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="mb-2 block text-sm font-medium text-gray-700">
                   Category
                 </label>
                 <select
-                  value={categoryId || ''}
-                  onChange={(e) => setCategoryId(e.target.value ? Number(e.target.value) : null)}
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  value={categoryId || ""}
+                  onChange={(e) =>
+                    setCategoryId(
+                      e.target.value ? Number(e.target.value) : null
+                    )
+                  }
+                  className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
                 >
                   <option value="">No Category</option>
                   {categories.map((category) => (
@@ -216,13 +222,15 @@ export default function NoteEditor({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="mb-2 block text-sm font-medium text-gray-700">
                   Priority
                 </label>
                 <select
                   value={priority}
-                  onChange={(e) => setPriority(e.target.value as 'low' | 'medium' | 'high')}
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  onChange={(e) =>
+                    setPriority(e.target.value as "low" | "medium" | "high")
+                  }
+                  className="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
                 >
                   <option value="low">Low</option>
                   <option value="medium">Medium</option>
@@ -233,14 +241,14 @@ export default function NoteEditor({
 
             {/* Tags */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="mb-2 block text-sm font-medium text-gray-700">
                 Tags
               </label>
-              <div className="flex flex-wrap gap-2 mb-2">
+              <div className="mb-2 flex flex-wrap gap-2">
                 {tags.map((tag, index) => (
                   <span
                     key={index}
-                    className="inline-flex items-center px-2 py-1 rounded-md text-sm font-medium bg-blue-100 text-blue-800"
+                    className="inline-flex items-center rounded-md bg-blue-100 px-2 py-1 text-sm font-medium text-blue-800"
                   >
                     {tag}
                     <button
@@ -259,13 +267,13 @@ export default function NoteEditor({
                   value={tagInput}
                   onChange={(e) => setTagInput(e.target.value)}
                   onKeyPress={handleTagInputKeyPress}
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-l-md shadow-sm text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="block w-full rounded-l-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
                   placeholder="Add tag..."
                 />
                 <button
                   type="button"
                   onClick={addTag}
-                  className="px-4 py-2 border border-l-0 border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-gray-50 hover:bg-gray-100"
+                  className="rounded-r-md border border-l-0 border-gray-300 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
                 >
                   Add
                 </button>
@@ -274,14 +282,14 @@ export default function NoteEditor({
 
             {/* Content */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="mb-2 block text-sm font-medium text-gray-700">
                 Content
               </label>
               <textarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 rows={15}
-                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 resize-none"
+                className="block w-full resize-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
                 placeholder="Start writing your note..."
               />
             </div>
@@ -289,18 +297,22 @@ export default function NoteEditor({
         ) : (
           <div className="space-y-6">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-4">
-                {note.title || 'Untitled'}
+              <h1 className="mb-4 text-3xl font-bold text-gray-900">
+                {note.title || "Untitled"}
               </h1>
 
-              <div className="flex items-center space-x-4 text-sm text-gray-500 mb-6">
+              <div className="mb-6 flex items-center space-x-4 text-sm text-gray-500">
                 <div className="flex items-center space-x-1">
-                  <span className={clsx(
-                    'font-medium',
-                    note.priority === 'high' ? 'text-red-600' :
-                    note.priority === 'medium' ? 'text-yellow-600' :
-                    'text-green-600'
-                  )}>
+                  <span
+                    className={clsx(
+                      "font-medium",
+                      note.priority === "high"
+                        ? "text-red-600"
+                        : note.priority === "medium"
+                          ? "text-yellow-600"
+                          : "text-green-600"
+                    )}
+                  >
                     {note.priority.toUpperCase()} PRIORITY
                   </span>
                 </div>
@@ -312,7 +324,7 @@ export default function NoteEditor({
                       {note.tag_list.map((tag, index) => (
                         <span
                           key={index}
-                          className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-xs"
+                          className="rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-600"
                         >
                           {tag}
                         </span>
@@ -325,11 +337,11 @@ export default function NoteEditor({
 
             <div className="prose max-w-none">
               {note.content ? (
-                <div className="whitespace-pre-wrap text-gray-700 leading-relaxed">
+                <div className="whitespace-pre-wrap leading-relaxed text-gray-700">
                   {note.content}
                 </div>
               ) : (
-                <div className="text-gray-400 italic">
+                <div className="italic text-gray-400">
                   This note is empty. Click Edit to add content.
                 </div>
               )}
@@ -338,5 +350,5 @@ export default function NoteEditor({
         )}
       </div>
     </div>
-  )
+  );
 }
