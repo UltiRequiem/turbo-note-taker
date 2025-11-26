@@ -51,8 +51,8 @@ export default function NoteEditor({
     if (!note) return
 
     onUpdateNote(note.id, {
-      title: title.trim() || 'Untitled',
-      content: content.trim(),
+      title: title?.trim() || 'Untitled',
+      content: content?.trim() || '',
       priority,
       category: categoryId,
       tag_list: tags,
@@ -72,7 +72,7 @@ export default function NoteEditor({
   }
 
   const addTag = () => {
-    const tag = tagInput.trim()
+    const tag = tagInput?.trim()
     if (tag && !tags.includes(tag)) {
       setTags(prev => [...prev, tag])
       setTagInput('')
