@@ -1,11 +1,12 @@
-from rest_framework import viewsets, filters
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from rest_framework.exceptions import PermissionDenied
-from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
-from .models import Note, Category
-from .serializers import NoteSerializer, NoteListSerializer, CategorySerializer
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters, viewsets
+from rest_framework.decorators import action
+from rest_framework.exceptions import PermissionDenied
+from rest_framework.response import Response
+
+from .models import Category, Note
+from .serializers import CategorySerializer, NoteListSerializer, NoteSerializer
 
 
 class CategoryViewSet(viewsets.ModelViewSet):

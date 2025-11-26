@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Note, Category
+
+from .models import Category, Note
 
 
 class CategorySerializer(serializers.ModelSerializer):

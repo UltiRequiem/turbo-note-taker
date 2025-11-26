@@ -172,45 +172,47 @@ src/
 
 ## 🚀 DevOps & Deployment
 
-### Q: How would you deploy this application?
+### Q: How is this application set up for local development?
 
 **A:** **Backend (Django):**
 
-- **Production Server**: Gunicorn + Nginx
-- **Database**: PostgreSQL for production
-- **Static Files**: AWS S3 or CDN
-- **Environment Variables**: Secure configuration management
-- **Monitoring**: Logging and error tracking
+- **Development Server**: Django's built-in runserver
+- **Database**: SQLite for simplicity and portability
+- **Package Management**: uv for fast dependency management
+- **Environment**: Local development with debug mode
+- **Testing**: Django's test framework with coverage
 
 **Frontend (Next.js):**
 
-- **Deployment**: Vercel, Netlify, or AWS
-- **CDN**: Automatic optimization and global distribution
-- **Environment Variables**: API URL configuration
-- **Performance**: Image optimization, code splitting
+- **Development**: Next.js dev server with hot reloading
+- **Package Management**: Bun for fast JavaScript builds
+- **TypeScript**: Compile-time type checking
+- **Styling**: Tailwind CSS for rapid development
 
-### Q: What CI/CD pipeline would you implement?
+### Q: What CI/CD pipeline did you implement?
 
 **A:**
 
 ```yaml
-# GitHub Actions workflow
-- Code Quality: ESLint, Prettier, TypeScript checking
-- Backend Tests: Django test suite
-- Frontend Tests: Jest and React Testing Library
+# GitHub Actions workflows (split for efficiency)
+- Backend Tests: Ruff linting, Django tests, coverage
+- Frontend Tests: TypeScript, ESLint, Prettier, build
 - Security: Dependency vulnerability scanning
-- Build: Docker containers for consistent deployment
-- Deploy: Automated deployment on successful tests
+- Integration Tests: Full-stack testing with SQLite
+- Code Quality: Performance checks and PR reports
 ```
+
+**Note**: This is a **local development project** for interview demonstration - no production deployment is included.
 
 ### Q: How did you handle environment configuration?
 
 **A:**
 
 - **Development**: Local SQLite, debug mode enabled
-- **Production**: PostgreSQL, secure settings, HTTPS
-- **Environment Variables**: Separate configs for each environment
-- **Docker**: Containerization for consistent deployment
+- **Package Management**: uv (Python) and bun (JavaScript) for fast builds
+- **Environment Variables**: `.env.local` for frontend configuration
+- **Database**: SQLite for portability and simplicity
+- **VS Code Setup**: Configured formatting and linting for seamless development
 
 ---
 
