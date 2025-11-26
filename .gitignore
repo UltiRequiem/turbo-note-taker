@@ -1,7 +1,6 @@
 # See backend/.gitignore and frontend/.gitignore for more specific ignores
 
 # IDE
-.vscode/
 .idea/
 *.swp
 *.swo
