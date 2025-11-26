@@ -28,7 +28,7 @@ class Note(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notes')
     title = models.CharField(max_length=255)
-    content = models.TextField()
+    content = models.TextField(blank=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='notes')
     priority = models.CharField(max_length=10, choices=PRIORITY_CHOICES, default='medium')
     is_pinned = models.BooleanField(default=False)
@@ -39,6 +39,12 @@ class Note(models.Model):
 
     class Meta:
         ordering = ['-is_pinned', '-updated_at']
+
+    def clean(self):
+        """Validate that category belongs to the same user as the note"""
+        from django.core.exceptions import ValidationError
+        if self.category and self.user_id and self.category.user_id != self.user_id:
+            raise ValidationError('Category must belong to the same user as the note.')
 
     def __str__(self):
         return f"{self.user.email} - {self.title}"

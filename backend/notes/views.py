@@ -1,6 +1,7 @@
 from rest_framework import viewsets, status, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.exceptions import PermissionDenied
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
 from .models import Note, Category
@@ -19,6 +20,18 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    def perform_update(self, serializer):
+        """Ensure only the category owner can update it"""
+        if serializer.instance.user != self.request.user:
+            raise PermissionDenied("You can only modify your own categories")
+        serializer.save()
+
+    def perform_destroy(self, instance):
+        """Ensure only the category owner can delete it"""
+        if instance.user != self.request.user:
+            raise PermissionDenied("You can only delete your own categories")
+        instance.delete()
 
 
 class NoteViewSet(viewsets.ModelViewSet):

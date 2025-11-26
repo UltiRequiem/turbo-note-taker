@@ -9,6 +9,7 @@ import NotesList from '@/components/NotesList'
 import NoteEditor from '@/components/NoteEditor'
 import Sidebar from '@/components/Sidebar'
 import Header from '@/components/Header'
+import CategoryManager from '@/components/CategoryManager'
 
 export default function DashboardPage() {
   const router = useRouter()
@@ -20,6 +21,8 @@ export default function DashboardPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null)
   const [showArchived, setShowArchived] = useState(false)
+  const [showCategoryManager, setShowCategoryManager] = useState(false)
+  const [userEmail, setUserEmail] = useState<string>('')
 
   // Check authentication on mount
   useEffect(() => {
@@ -34,17 +37,21 @@ export default function DashboardPage() {
   const loadData = async () => {
     try {
       setLoading(true)
-      const [notesResponse, categoriesResponse] = await Promise.all([
+      const [notesResponse, categoriesResponse, profileResponse] = await Promise.all([
         notesApi.getAll({
           search: searchQuery || undefined,
           category: selectedCategory || undefined,
           is_archived: showArchived || undefined,
         }),
         categoriesApi.getAll(),
+        authApi.getProfile().catch(() => null), // Don't fail if profile fails
       ])
 
       setNotes(notesResponse.results)
       setCategories(categoriesResponse)
+      if (profileResponse) {
+        setUserEmail(profileResponse.email)
+      }
     } catch (error) {
       console.error('Error loading data:', error)
       // If unauthorized, redirect to login
@@ -61,8 +68,8 @@ export default function DashboardPage() {
 
   const handleCreateNote = async () => {
     const newNote = {
-      title: 'Untitled Note',
-      content: '',
+      title: 'New Note',
+      content: 'Start writing your thoughts here...',
       priority: 'medium' as const,
     }
 
@@ -151,6 +158,45 @@ export default function DashboardPage() {
     }
   }
 
+  const handleCreateCategory = async (data: { name: string; color?: string }) => {
+    try {
+      const newCategory = await categoriesApi.create(data)
+      setCategories(prev => [...prev, newCategory])
+      toast.success('Category created')
+    } catch (error) {
+      console.error('Error creating category:', error)
+      toast.error('Failed to create category')
+    }
+  }
+
+  const handleUpdateCategory = async (id: number, data: { name?: string; color?: string }) => {
+    try {
+      const updatedCategory = await categoriesApi.update(id, data)
+      setCategories(prev => prev.map(cat => cat.id === id ? updatedCategory : cat))
+      toast.success('Category updated')
+    } catch (error) {
+      console.error('Error updating category:', error)
+      toast.error('Failed to update category')
+    }
+  }
+
+  const handleDeleteCategory = async (id: number) => {
+    try {
+      await categoriesApi.delete(id)
+      setCategories(prev => prev.filter(cat => cat.id !== id))
+      // If the deleted category was selected, reset selection
+      if (selectedCategory === id) {
+        setSelectedCategory(null)
+      }
+      // Reload notes to reflect category changes
+      loadData()
+      toast.success('Category deleted')
+    } catch (error) {
+      console.error('Error deleting category:', error)
+      toast.error('Failed to delete category')
+    }
+  }
+
   const handleLogout = () => {
     authApi.logout()
     router.push('/auth/login')
@@ -167,6 +213,8 @@ export default function DashboardPage() {
             onSelectCategory={setSelectedCategory}
             showArchived={showArchived}
             onToggleArchived={setShowArchived}
+            onManageCategories={() => setShowCategoryManager(true)}
+            userEmail={userEmail}
           />
 
           <div className="flex-1 flex flex-col">
@@ -188,7 +236,7 @@ export default function DashboardPage() {
                   Welcome to your notes!
                 </h3>
                 <p className="text-gray-600 mb-8 max-w-md">
-                  You don't have any notes yet. Create your first note to get started organizing your thoughts.
+                  Create your first note to start organizing your thoughts and ideas.
                 </p>
                 <button
                   onClick={handleCreateNote}
@@ -227,6 +275,8 @@ export default function DashboardPage() {
         onSelectCategory={setSelectedCategory}
         showArchived={showArchived}
         onToggleArchived={setShowArchived}
+        onManageCategories={() => setShowCategoryManager(true)}
+        userEmail={userEmail}
       />
 
       <div className="flex-1 flex flex-col">

@@ -190,7 +190,7 @@ export default function NoteEditor({
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter note title..."
               />
             </div>
@@ -204,7 +204,7 @@ export default function NoteEditor({
                 <select
                   value={categoryId || ''}
                   onChange={(e) => setCategoryId(e.target.value ? Number(e.target.value) : null)}
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="">No Category</option>
                   {categories.map((category) => (
@@ -222,7 +222,7 @@ export default function NoteEditor({
                 <select
                   value={priority}
                   onChange={(e) => setPriority(e.target.value as 'low' | 'medium' | 'high')}
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="low">Low</option>
                   <option value="medium">Medium</option>
@@ -259,7 +259,7 @@ export default function NoteEditor({
                   value={tagInput}
                   onChange={(e) => setTagInput(e.target.value)}
                   onKeyPress={handleTagInputKeyPress}
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-l-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="block w-full px-3 py-2 border border-gray-300 rounded-l-md shadow-sm text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Add tag..."
                 />
                 <button
@@ -281,7 +281,7 @@ export default function NoteEditor({
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 rows={15}
-                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 resize-none"
+                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 resize-none"
                 placeholder="Start writing your note..."
               />
             </div>
