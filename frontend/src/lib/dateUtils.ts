@@ -10,7 +10,11 @@ export function formatNoteDate(dateString: string): string {
 
   // Reset time to compare only dates
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const noteDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const noteDate = new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate()
+  );
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
 

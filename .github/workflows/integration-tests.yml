@@ -10,7 +10,6 @@ jobs:
   integration-tests:
     name: Integration Tests
     runs-on: ubuntu-latest
-    needs: [] # Remove dependency on other jobs to allow parallel execution
 
     steps:
     - name: Checkout code

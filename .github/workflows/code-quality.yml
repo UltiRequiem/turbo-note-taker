@@ -15,9 +15,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Lighthouse CI
-      run: npm install -g @lhci/cli@0.12.x
-
     - name: Set up Bun
       uses: oven-sh/setup-bun@v1
 
@@ -29,7 +26,7 @@ jobs:
       working-directory: ./frontend
       run: bun run build
 
-    - name: Run Lighthouse CI
+    - name: Run performance audit
       working-directory: ./frontend
       run: |
         # Basic performance audit - no external services needed
@@ -55,5 +52,5 @@ jobs:
             owner,
             repo,
             issue_number: number,
-            body: '## 📊 Code Quality Report\n\n✅ All quality checks completed!\n\n- Backend: Ruff linting ✓\n- Frontend: ESLint + Prettier ✓\n- Security: Dependency scan ✓\n- Build: Successful ✓\n\n*Local development project - no deployment required*'
+            body: '## 📊 Code Quality Report\n\n✅ All quality checks completed!\n\n- Backend: Ruff linting ✓\n- Frontend: ESLint + Prettier ✓\n- Build: Successful ✓\n\n*Local development project - no deployment required*'
           });
