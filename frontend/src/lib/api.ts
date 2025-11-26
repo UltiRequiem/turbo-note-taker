@@ -10,6 +10,46 @@ const api = axios.create({
   },
 })
 
+// Add token to requests if available
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('accessToken')
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
+})
+
+// Handle token refresh
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (error.response?.status === 401) {
+      const refreshToken = localStorage.getItem('refreshToken')
+      if (refreshToken) {
+        try {
+          const response = await axios.post(`${API_BASE_URL}/api/auth/refresh/`, {
+            refresh: refreshToken
+          })
+          const newToken = response.data.access
+          localStorage.setItem('accessToken', newToken)
+          // Retry the original request
+          error.config.headers.Authorization = `Bearer ${newToken}`
+          return api.request(error.config)
+        } catch (refreshError) {
+          // Refresh failed, redirect to login
+          localStorage.removeItem('accessToken')
+          localStorage.removeItem('refreshToken')
+          window.location.href = '/login'
+        }
+      } else {
+        // No refresh token, redirect to login
+        window.location.href = '/login'
+      }
+    }
+    return Promise.reject(error)
+  }
+)
+
 // Categories API
 export const categoriesApi = {
   getAll: async (): Promise<Category[]> => {
@@ -96,6 +136,35 @@ export const notesApi = {
     const response = await api.get('/notes/stats/')
     return response.data
   },
+}
+
+// Authentication API
+export const authApi = {
+  login: async (email: string, password: string) => {
+    const response = await axios.post(`${API_BASE_URL}/api/auth/login/`, {
+      username: email,
+      password: password
+    })
+    return response.data
+  },
+
+  signup: async (email: string, password: string) => {
+    const response = await axios.post(`${API_BASE_URL}/api/auth/signup/`, {
+      email: email,
+      password: password
+    })
+    return response.data
+  },
+
+  getProfile: async () => {
+    const response = await api.get('/auth/profile/')
+    return response.data
+  },
+
+  logout: () => {
+    localStorage.removeItem('accessToken')
+    localStorage.removeItem('refreshToken')
+  }
 }
 
 export default api

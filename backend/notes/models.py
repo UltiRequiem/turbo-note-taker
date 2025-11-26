@@ -1,9 +1,11 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='categories')
+    name = models.CharField(max_length=100)
     color = models.CharField(max_length=7, default='#3B82F6')  # Hex color code
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
@@ -11,9 +13,10 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = 'Categories'
         ordering = ['name']
+        unique_together = ['user', 'name']  # User can't have duplicate category names
 
     def __str__(self):
-        return self.name
+        return f"{self.user.email} - {self.name}"
 
 
 class Note(models.Model):
@@ -23,6 +26,7 @@ class Note(models.Model):
         ('high', 'High'),
     ]
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notes')
     title = models.CharField(max_length=255)
     content = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='notes')
@@ -37,7 +41,7 @@ class Note(models.Model):
         ordering = ['-is_pinned', '-updated_at']
 
     def __str__(self):
-        return self.title
+        return f"{self.user.email} - {self.title}"
 
     @property
     def tag_list(self):

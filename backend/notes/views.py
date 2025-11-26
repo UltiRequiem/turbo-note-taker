@@ -8,16 +8,20 @@ from .serializers import NoteSerializer, NoteListSerializer, CategorySerializer
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
     serializer_class = CategorySerializer
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['name']
     ordering_fields = ['name', 'created_at']
     ordering = ['name']
 
+    def get_queryset(self):
+        return Category.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
 
 class NoteViewSet(viewsets.ModelViewSet):
-    queryset = Note.objects.all()
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['category', 'priority', 'is_pinned', 'is_archived']
     search_fields = ['title', 'content', 'tags']
@@ -30,7 +34,7 @@ class NoteViewSet(viewsets.ModelViewSet):
         return NoteSerializer
 
     def get_queryset(self):
-        queryset = Note.objects.all()
+        queryset = Note.objects.filter(user=self.request.user)
 
         # Filter by search query across multiple fields
         search = self.request.query_params.get('search', None)
@@ -49,6 +53,9 @@ class NoteViewSet(viewsets.ModelViewSet):
                 queryset = queryset.filter(tags__icontains=tag)
 
         return queryset
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
     @action(detail=True, methods=['post'])
     def toggle_pin(self, request, pk=None):
