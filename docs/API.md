@@ -517,7 +517,7 @@ handling.
 
 ## 📚 Interactive API Documentation
 
-### Swagger UI (Recommended)
+### Swagger UI
 
 **URL**: `http://localhost:8000/api/docs/`
 
@@ -528,6 +528,8 @@ handling.
 - **Request/Response Examples**: Live examples with sample data
 - **Parameter Documentation**: All query parameters explained
 - **Schema Validation**: Real-time request validation
+- **Code Samples**: Multiple programming language examples
+- **Search Functionality**: Quickly find specific endpoints
 
 **How to Use**:
 
@@ -536,17 +538,6 @@ handling.
 3. Login via `/api/auth/login/` to get your access token
 4. Copy the access token and paste it in the authorization modal
 5. Now you can test any endpoint with the "Try it out" button
-
-### ReDoc (Alternative)
-
-**URL**: `http://localhost:8000/api/redoc/`
-
-**Features**:
-
-- **Beautiful Design**: Clean, readable documentation layout
-- **Code Samples**: Multiple programming language examples
-- **Comprehensive Details**: Detailed parameter and response documentation
-- **Search Functionality**: Quickly find specific endpoints
 
 ### OpenAPI Schema
 

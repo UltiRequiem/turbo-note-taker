@@ -15,7 +15,7 @@ separation of concerns and robust security implementation.
 │  │                 │ │                 │ │              │  │
 │  │ • Dashboard     │ │ • NoteEditor    │ │ • Axios      │  │
 │  │ • Auth Pages    │ │ • NotesList     │ │ • JWT Tokens │  │
-│  │ • Navigation    │ │ • CategoryMgr   │ │ • Error Hdlg │  │
+│  │ • Navigation    │ │ • CategoryMgr   │ │ • Error Handling │  │
 │  └─────────────────┘ └─────────────────┘ └──────────────┘  │
 └─────────────────────────┬───────────────────────────────────┘
                           │ HTTP/JSON API
