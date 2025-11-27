@@ -33,7 +33,7 @@ export default function DashboardPage() {
           notesApi.getAll({
             search: searchQuery || undefined,
             category: selectedCategory || undefined,
-            is_archived: showArchived || undefined,
+            is_archived: showArchived,
           }),
           categoriesApi.getAll(),
           authApi.getProfile().catch(() => null), // Don't fail if profile fails
