@@ -4,12 +4,49 @@ from rest_framework import filters, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
+from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter
 
 from .models import Category, Note
 from .serializers import CategorySerializer, NoteListSerializer, NoteSerializer
 
 
+@extend_schema_view(
+    list=extend_schema(
+        summary="List user categories",
+        description="Retrieve all categories belonging to the authenticated user with notes count.",
+        parameters=[
+            OpenApiParameter("search", str, description="Search categories by name"),
+            OpenApiParameter("ordering", str, description="Order by: name, created_at, -name, -created_at"),
+        ]
+    ),
+    create=extend_schema(
+        summary="Create a new category",
+        description="Create a new category for the authenticated user. Category names must be unique per user.",
+    ),
+    retrieve=extend_schema(
+        summary="Get category details",
+        description="Retrieve details of a specific category owned by the authenticated user.",
+    ),
+    update=extend_schema(
+        summary="Update category",
+        description="Update a category owned by the authenticated user.",
+    ),
+    partial_update=extend_schema(
+        summary="Partially update category",
+        description="Partially update a category owned by the authenticated user.",
+    ),
+    destroy=extend_schema(
+        summary="Delete category",
+        description="Delete a category owned by the authenticated user. Notes in this category will have their category set to null.",
+    ),
+)
 class CategoryViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet for managing user-specific categories.
+
+    Provides CRUD operations for categories with automatic user isolation.
+    Each user can only see and modify their own categories.
+    """
     serializer_class = CategorySerializer
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ["name"]
@@ -35,7 +72,49 @@ class CategoryViewSet(viewsets.ModelViewSet):
         instance.delete()
 
 
+@extend_schema_view(
+    list=extend_schema(
+        summary="List user notes",
+        description="Retrieve all notes belonging to the authenticated user with filtering and search capabilities.",
+        parameters=[
+            OpenApiParameter("category", int, description="Filter by category ID"),
+            OpenApiParameter("priority", str, description="Filter by priority (low, medium, high)"),
+            OpenApiParameter("is_pinned", bool, description="Filter by pinned status"),
+            OpenApiParameter("is_archived", bool, description="Filter by archived status"),
+            OpenApiParameter("search", str, description="Search in title, content, and tags"),
+            OpenApiParameter("tags", str, description="Filter by tags (comma-separated)"),
+            OpenApiParameter("ordering", str, description="Order by: title, created_at, updated_at, priority (add - for desc)"),
+        ]
+    ),
+    create=extend_schema(
+        summary="Create a new note",
+        description="Create a new note for the authenticated user.",
+    ),
+    retrieve=extend_schema(
+        summary="Get note details",
+        description="Retrieve details of a specific note owned by the authenticated user.",
+    ),
+    update=extend_schema(
+        summary="Update note",
+        description="Update a note owned by the authenticated user.",
+    ),
+    partial_update=extend_schema(
+        summary="Partially update note",
+        description="Partially update a note owned by the authenticated user.",
+    ),
+    destroy=extend_schema(
+        summary="Delete note",
+        description="Delete a note owned by the authenticated user.",
+    ),
+)
 class NoteViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet for managing user-specific notes.
+
+    Provides CRUD operations for notes with advanced filtering, searching,
+    and custom actions like pin/archive. Each user can only see and modify
+    their own notes.
+    """
     filter_backends = [
         DjangoFilterBackend,
         filters.SearchFilter,
@@ -81,6 +160,15 @@ class NoteViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+    @extend_schema(
+        summary="Toggle note pin status",
+        description="Pin or unpin a note. Pinned notes appear at the top of the list.",
+        responses={200: {"type": "object", "properties": {
+            "id": {"type": "integer"},
+            "is_pinned": {"type": "boolean"},
+            "message": {"type": "string"}
+        }}}
+    )
     @action(detail=True, methods=["post"])
     def toggle_pin(self, request, pk=None):
         note = self.get_object()
@@ -94,6 +182,15 @@ class NoteViewSet(viewsets.ModelViewSet):
             }
         )
 
+    @extend_schema(
+        summary="Toggle note archive status",
+        description="Archive or unarchive a note. Archived notes are hidden from the main view.",
+        responses={200: {"type": "object", "properties": {
+            "id": {"type": "integer"},
+            "is_archived": {"type": "boolean"},
+            "message": {"type": "string"}
+        }}}
+    )
     @action(detail=True, methods=["post"])
     def toggle_archive(self, request, pk=None):
         note = self.get_object()
@@ -107,6 +204,11 @@ class NoteViewSet(viewsets.ModelViewSet):
             }
         )
 
+    @extend_schema(
+        summary="List archived notes",
+        description="Get all archived notes for the authenticated user.",
+        responses={200: NoteListSerializer(many=True)}
+    )
     @action(detail=False, methods=["get"])
     def archived(self, request):
         archived_notes = self.get_queryset().filter(is_archived=True)
@@ -117,12 +219,28 @@ class NoteViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(archived_notes, many=True)
         return Response(serializer.data)
 
+    @extend_schema(
+        summary="List pinned notes",
+        description="Get all pinned notes for the authenticated user.",
+        responses={200: NoteListSerializer(many=True)}
+    )
     @action(detail=False, methods=["get"])
     def pinned(self, request):
         pinned_notes = self.get_queryset().filter(is_pinned=True)
         serializer = self.get_serializer(pinned_notes, many=True)
         return Response(serializer.data)
 
+    @extend_schema(
+        summary="Get user statistics",
+        description="Get statistical information about user's notes and categories.",
+        responses={200: {"type": "object", "properties": {
+            "total_notes": {"type": "integer"},
+            "active_notes": {"type": "integer"},
+            "pinned_notes": {"type": "integer"},
+            "archived_notes": {"type": "integer"},
+            "categories_count": {"type": "integer"}
+        }}}
+    )
     @action(detail=False, methods=["get"])
     def stats(self, request):
         total_notes = self.get_queryset().count()
@@ -136,6 +254,6 @@ class NoteViewSet(viewsets.ModelViewSet):
                 "active_notes": active_notes,
                 "pinned_notes": pinned_notes,
                 "archived_notes": archived_notes,
-                "categories_count": Category.objects.count(),
+                "categories_count": Category.objects.filter(user=self.request.user).count(),
             }
         )

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "corsheaders",
+    "drf_spectacular",
     "notes",
 ]
 
@@ -141,6 +142,7 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 20,
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 # JWT Settings
@@ -184,3 +186,13 @@ CORS_ALLOW_HEADERS = [
     "x-csrftoken",
     "x-requested-with",
 ]
+
+# drf-spectacular settings for API documentation
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Notes Taking App API",
+    "DESCRIPTION": "A comprehensive REST API for managing personal notes with user authentication, categories, and full CRUD operations.",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "COMPONENT_SPLIT_REQUEST": True,
+    "SORT_OPERATIONS": False,
+}
