@@ -71,7 +71,7 @@ with JWT authentication, RESTful APIs, and a responsive user interface.
 ## 📁 Project Structure
 
 ```
-turbofuck/
+turbonotes/
 ├── backend/                 # Django backend
 │   ├── notes_backend/      # Django project configuration
 │   ├── notes/              # Django app for notes functionality
