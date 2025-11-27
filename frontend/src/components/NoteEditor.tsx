@@ -165,7 +165,7 @@ export default function NoteEditor({
                   type="button"
                   onClick={handleSave}
                   disabled={isSaving}
-                  className="inline-flex items-center rounded border border-transparent bg-green-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="inline-flex items-center rounded border border-transparent bg-green-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <CheckIcon className="mr-1 h-4 w-4" />
                   {isSaving ? "Saving..." : "Save"}
@@ -189,7 +189,6 @@ export default function NoteEditor({
             )}
           </div>
         </div>
-
       </div>
 
       {/* Content */}

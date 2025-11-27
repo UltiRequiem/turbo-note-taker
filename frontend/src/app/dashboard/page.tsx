@@ -40,7 +40,10 @@ export default function DashboardPage() {
         ]);
 
       console.log("FRONTEND: Raw API response:", notesResponse);
-      console.log("FRONTEND: First note content:", notesResponse.results[0]?.content);
+      console.log(
+        "FRONTEND: First note content:",
+        notesResponse.results[0]?.content
+      );
 
       // Sort notes with pinned ones first, then by updated_at descending
       const sortedNotes = notesResponse.results.sort((a, b) => {
