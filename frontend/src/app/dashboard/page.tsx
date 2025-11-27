@@ -1,15 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { toast } from "react-hot-toast";
-import { Note, Category } from "@/types";
-import { notesApi, categoriesApi, authApi } from "@/lib/api";
-import NotesList from "@/components/NotesList";
-import NoteEditor from "@/components/NoteEditor";
-import Sidebar from "@/components/Sidebar";
-import Header from "@/components/Header";
 import CategoryManager from "@/components/CategoryManager";
+import Header from "@/components/Header";
+import NoteEditor from "@/components/NoteEditor";
+import NotesList from "@/components/NotesList";
+import Sidebar from "@/components/Sidebar";
+import { authApi, categoriesApi, notesApi } from "@/lib/api";
+import { Category, Note } from "@/types";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -24,17 +24,7 @@ export default function DashboardPage() {
   const [showCategoryManager, setShowCategoryManager] = useState(false);
   const [userEmail, setUserEmail] = useState<string>("");
 
-  // Check authentication on mount
-  useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      router.push("/auth/login");
-      return;
-    }
-    loadData();
-  }, [searchQuery, selectedCategory, showArchived]);
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     try {
       setLoading(true);
       const [notesResponse, categoriesResponse, profileResponse] =
@@ -50,22 +40,40 @@ export default function DashboardPage() {
 
       setNotes(notesResponse.results);
       setCategories(categoriesResponse);
+
       if (profileResponse) {
         setUserEmail(profileResponse.email);
       }
     } catch (error) {
       console.error("Error loading data:", error);
+
       // If unauthorized, redirect to login
-      if ((error as any)?.response?.status === 401) {
-        authApi.logout();
-        router.push("/auth/login");
-      } else {
-        toast.error("Failed to load data");
+      if (error && typeof error === "object" && "response" in error) {
+        const responseError = error as { response?: { status?: number } };
+
+        if (responseError.response?.status === 401) {
+          authApi.logout();
+          router.push("/auth/login");
+          return;
+        }
       }
+
+      toast.error("Failed to load data");
     } finally {
       setLoading(false);
     }
-  };
+  }, [searchQuery, selectedCategory, showArchived, router]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) {
+      router.push("/auth/login");
+      return;
+    }
+
+    loadData();
+  }, [loadData, router]);
 
   const handleCreateNote = async () => {
     const newNote = {
@@ -274,6 +282,7 @@ export default function DashboardPage() {
                 </p>
                 <button
                   onClick={handleCreateNote}
+                  type="button"
                   className="inline-flex items-center rounded-md border border-transparent bg-blue-600 px-6 py-3 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 >
                   Create Your First Note
@@ -366,6 +375,7 @@ export default function DashboardPage() {
               </div>
               <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                 <button
+                  type="button"
                   onClick={() => setShowCategoryManager(false)}
                   className="inline-flex w-full justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
                 >
