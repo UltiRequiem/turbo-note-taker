@@ -18,7 +18,7 @@ class NoteSerializer(serializers.ModelSerializer):
     category_name = serializers.CharField(source="category.name", read_only=True)
     category_color = serializers.CharField(source="category.color", read_only=True)
     tag_list = serializers.ListField(
-        child=serializers.CharField(max_length=50), required=False, write_only=True
+        child=serializers.CharField(max_length=50), required=False
     )
 
     class Meta:
@@ -90,6 +90,12 @@ class NoteListSerializer(serializers.ModelSerializer):
             "priority",
             "is_pinned",
             "is_archived",
+            "tags",
             "created_at",
             "updated_at",
         ]
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data["tag_list"] = instance.tag_list
+        return data

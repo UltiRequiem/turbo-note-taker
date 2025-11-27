@@ -64,6 +64,10 @@ POST /auth/signup/
 }
 ```
 
+**Required Fields:**
+- `email` (string): User's email address (will be used as username)
+- `password` (string): User's password (minimum 8 characters)
+
 **Response (201):**
 
 ```json

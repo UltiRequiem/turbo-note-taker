@@ -195,4 +195,12 @@ SPECTACULAR_SETTINGS = {
     "SERVE_INCLUDE_SCHEMA": False,
     "COMPONENT_SPLIT_REQUEST": True,
     "SORT_OPERATIONS": False,
+    "SWAGGER_UI_SETTINGS": {
+        "dom_id": "#swagger-ui",
+        "layout": "BaseLayout",
+        "deepLinking": True,
+        "showExtensions": True,
+        "showCommonExtensions": True,
+        "custom_css": ".swagger-ui .topbar-wrapper .download-url-wrapper input[type=text] { color: #3b4151 !important; background-color: #fff !important; } .swagger-ui .topbar-wrapper .download-url-wrapper .select-label { color: #3b4151 !important; }"
+    },
 }

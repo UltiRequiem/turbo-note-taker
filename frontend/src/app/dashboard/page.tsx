@@ -39,7 +39,14 @@ export default function DashboardPage() {
           authApi.getProfile().catch(() => null), // Don't fail if profile fails
         ]);
 
-      setNotes(notesResponse.results);
+      // Sort notes with pinned ones first, then by updated_at descending
+      const sortedNotes = notesResponse.results.sort((a, b) => {
+        if (a.is_pinned !== b.is_pinned) {
+          return b.is_pinned ? 1 : -1; // Pinned notes first
+        }
+        return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+      });
+      setNotes(sortedNotes);
       setCategories(categoriesResponse);
 
       if (profileResponse) {
@@ -129,11 +136,18 @@ export default function DashboardPage() {
   const handleTogglePin = async (id: number) => {
     try {
       const result = await notesApi.togglePin(id);
-      setNotes((prev) =>
-        prev.map((note) =>
+      setNotes((prev) => {
+        const updatedNotes = prev.map((note) =>
           note.id === id ? { ...note, is_pinned: result.is_pinned } : note
-        )
-      );
+        );
+        // Sort notes with pinned ones first, then by updated_at descending
+        return updatedNotes.sort((a, b) => {
+          if (a.is_pinned !== b.is_pinned) {
+            return b.is_pinned ? 1 : -1; // Pinned notes first
+          }
+          return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+        });
+      });
       if (selectedNote?.id === id) {
         setSelectedNote((prev) =>
           prev ? { ...prev, is_pinned: result.is_pinned } : null

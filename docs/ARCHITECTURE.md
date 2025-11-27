@@ -113,17 +113,34 @@ def validate_category(self, value):
 │                 │         │                 │
 │ • id (PK)       │         │ • id (PK)       │
 │ • user_id (FK)  │◄────────┤ • user_id (FK)  │
-│ • name          │   0:N   │ • category_id   │
+│ • name          │   0:N   │ • category_id(FK)│
 │ • color         │         │ • title         │
 │ • created_at    │         │ • content       │
 │ • updated_at    │         │ • priority      │
-└─────────────────┘         │ • is_pinned     │
-                            │ • is_archived   │
-                            │ • tags          │
+└─────────┬───────┘         │ • is_pinned     │
+          │ 1:N             │ • is_archived   │
+          └─────────────────┤ • tags          │
                             │ • created_at    │
                             │ • updated_at    │
                             └─────────────────┘
 ```
+
+### Relationship Details
+
+**User ↔ Category (1:N)**
+- One User can have many Categories
+- Each Category belongs to exactly one User
+- Cascade delete: When User is deleted, all their Categories are deleted
+
+**User ↔ Note (1:N)**
+- One User can have many Notes
+- Each Note belongs to exactly one User
+- Cascade delete: When User is deleted, all their Notes are deleted
+
+**Category ↔ Note (0:N)**
+- One Category can be assigned to many Notes (or none)
+- Each Note can optionally belong to one Category
+- Set NULL: When Category is deleted, Notes keep their other data but category_id becomes NULL
 
 ### Database Constraints
 
@@ -138,7 +155,58 @@ FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
 -- Indexes for performance
 CREATE INDEX idx_notes_user_id ON notes(user_id);
 CREATE INDEX idx_notes_created_at ON notes(created_at);
+CREATE INDEX idx_notes_category_id ON notes(category_id);
 CREATE INDEX idx_categories_user_id ON categories(user_id);
+```
+
+### Django Model Implementation
+
+```python
+# User model (Django built-in)
+class User(AbstractUser):
+    # id, username, email, password, date_joined are built-in
+    pass
+
+# Category model
+class Category(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="categories"
+    )
+    name = models.CharField(max_length=100)
+    color = models.CharField(max_length=7, default="#3B82F6")
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ["user", "name"]  # Unique category names per user
+
+# Note model
+class Note(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="notes"
+    )
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="notes"
+    )
+    title = models.CharField(max_length=255)
+    content = models.TextField(blank=True)
+    priority = models.CharField(max_length=10, choices=PRIORITY_CHOICES)
+    is_pinned = models.BooleanField(default=False)
+    is_archived = models.BooleanField(default=False)
+    tags = models.CharField(max_length=255, blank=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-is_pinned", "-updated_at"]
 ```
 
 ## 🔄 Request/Response Flow
