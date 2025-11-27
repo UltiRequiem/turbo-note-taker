@@ -1,10 +1,10 @@
 from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
+from drf_spectacular.utils import OpenApiParameter, extend_schema, extend_schema_view
 from rest_framework import filters, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
-from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter
 
 from .models import Category, Note
 from .serializers import CategorySerializer, NoteListSerializer, NoteSerializer
@@ -16,8 +16,12 @@ from .serializers import CategorySerializer, NoteListSerializer, NoteSerializer
         description="Retrieve all categories belonging to the authenticated user with notes count.",
         parameters=[
             OpenApiParameter("search", str, description="Search categories by name"),
-            OpenApiParameter("ordering", str, description="Order by: name, created_at, -name, -created_at"),
-        ]
+            OpenApiParameter(
+                "ordering",
+                str,
+                description="Order by: name, created_at, -name, -created_at",
+            ),
+        ],
     ),
     create=extend_schema(
         summary="Create a new category",
@@ -47,6 +51,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     Provides CRUD operations for categories with automatic user isolation.
     Each user can only see and modify their own categories.
     """
+
     serializer_class = CategorySerializer
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ["name"]
@@ -78,13 +83,25 @@ class CategoryViewSet(viewsets.ModelViewSet):
         description="Retrieve all notes belonging to the authenticated user with filtering and search capabilities.",
         parameters=[
             OpenApiParameter("category", int, description="Filter by category ID"),
-            OpenApiParameter("priority", str, description="Filter by priority (low, medium, high)"),
+            OpenApiParameter(
+                "priority", str, description="Filter by priority (low, medium, high)"
+            ),
             OpenApiParameter("is_pinned", bool, description="Filter by pinned status"),
-            OpenApiParameter("is_archived", bool, description="Filter by archived status"),
-            OpenApiParameter("search", str, description="Search in title, content, and tags"),
-            OpenApiParameter("tags", str, description="Filter by tags (comma-separated)"),
-            OpenApiParameter("ordering", str, description="Order by: title, created_at, updated_at, priority (add - for desc)"),
-        ]
+            OpenApiParameter(
+                "is_archived", bool, description="Filter by archived status"
+            ),
+            OpenApiParameter(
+                "search", str, description="Search in title, content, and tags"
+            ),
+            OpenApiParameter(
+                "tags", str, description="Filter by tags (comma-separated)"
+            ),
+            OpenApiParameter(
+                "ordering",
+                str,
+                description="Order by: title, created_at, updated_at, priority (add - for desc)",
+            ),
+        ],
     ),
     create=extend_schema(
         summary="Create a new note",
@@ -115,6 +132,7 @@ class NoteViewSet(viewsets.ModelViewSet):
     and custom actions like pin/archive. Each user can only see and modify
     their own notes.
     """
+
     filter_backends = [
         DjangoFilterBackend,
         filters.SearchFilter,
@@ -163,11 +181,16 @@ class NoteViewSet(viewsets.ModelViewSet):
     @extend_schema(
         summary="Toggle note pin status",
         description="Pin or unpin a note. Pinned notes appear at the top of the list.",
-        responses={200: {"type": "object", "properties": {
-            "id": {"type": "integer"},
-            "is_pinned": {"type": "boolean"},
-            "message": {"type": "string"}
-        }}}
+        responses={
+            200: {
+                "type": "object",
+                "properties": {
+                    "id": {"type": "integer"},
+                    "is_pinned": {"type": "boolean"},
+                    "message": {"type": "string"},
+                },
+            }
+        },
     )
     @action(detail=True, methods=["post"])
     def toggle_pin(self, request, pk=None):
@@ -185,11 +208,16 @@ class NoteViewSet(viewsets.ModelViewSet):
     @extend_schema(
         summary="Toggle note archive status",
         description="Archive or unarchive a note. Archived notes are hidden from the main view.",
-        responses={200: {"type": "object", "properties": {
-            "id": {"type": "integer"},
-            "is_archived": {"type": "boolean"},
-            "message": {"type": "string"}
-        }}}
+        responses={
+            200: {
+                "type": "object",
+                "properties": {
+                    "id": {"type": "integer"},
+                    "is_archived": {"type": "boolean"},
+                    "message": {"type": "string"},
+                },
+            }
+        },
     )
     @action(detail=True, methods=["post"])
     def toggle_archive(self, request, pk=None):
@@ -207,7 +235,7 @@ class NoteViewSet(viewsets.ModelViewSet):
     @extend_schema(
         summary="List archived notes",
         description="Get all archived notes for the authenticated user.",
-        responses={200: NoteListSerializer(many=True)}
+        responses={200: NoteListSerializer(many=True)},
     )
     @action(detail=False, methods=["get"])
     def archived(self, request):
@@ -222,7 +250,7 @@ class NoteViewSet(viewsets.ModelViewSet):
     @extend_schema(
         summary="List pinned notes",
         description="Get all pinned notes for the authenticated user.",
-        responses={200: NoteListSerializer(many=True)}
+        responses={200: NoteListSerializer(many=True)},
     )
     @action(detail=False, methods=["get"])
     def pinned(self, request):
@@ -233,13 +261,18 @@ class NoteViewSet(viewsets.ModelViewSet):
     @extend_schema(
         summary="Get user statistics",
         description="Get statistical information about user's notes and categories.",
-        responses={200: {"type": "object", "properties": {
-            "total_notes": {"type": "integer"},
-            "active_notes": {"type": "integer"},
-            "pinned_notes": {"type": "integer"},
-            "archived_notes": {"type": "integer"},
-            "categories_count": {"type": "integer"}
-        }}}
+        responses={
+            200: {
+                "type": "object",
+                "properties": {
+                    "total_notes": {"type": "integer"},
+                    "active_notes": {"type": "integer"},
+                    "pinned_notes": {"type": "integer"},
+                    "archived_notes": {"type": "integer"},
+                    "categories_count": {"type": "integer"},
+                },
+            }
+        },
     )
     @action(detail=False, methods=["get"])
     def stats(self, request):
@@ -254,6 +287,8 @@ class NoteViewSet(viewsets.ModelViewSet):
                 "active_notes": active_notes,
                 "pinned_notes": pinned_notes,
                 "archived_notes": archived_notes,
-                "categories_count": Category.objects.filter(user=self.request.user).count(),
+                "categories_count": Category.objects.filter(
+                    user=self.request.user
+                ).count(),
             }
         )
