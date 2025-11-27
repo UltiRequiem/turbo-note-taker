@@ -62,6 +62,12 @@ python manage.py runserver
 
 The API will be available at `http://localhost:8000`
 
+### API Documentation
+Once the server is running, access the interactive API documentation:
+- **Swagger UI**: `http://localhost:8000/api/docs/` - Interactive API testing
+- **ReDoc**: `http://localhost:8000/api/redoc/` - Beautiful documentation
+- **OpenAPI Schema**: `http://localhost:8000/api/schema/` - Raw API specification
+
 ### Alternative Start Method
 
 ```bash

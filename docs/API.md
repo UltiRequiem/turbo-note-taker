@@ -512,3 +512,140 @@ curl -X POST http://localhost:8000/api/notes/ \
 This API provides complete CRUD functionality for a modern note-taking
 application with proper authentication, user isolation, and comprehensive error
 handling.
+
+---
+
+## 📚 Interactive API Documentation
+
+### Swagger UI (Recommended)
+
+**URL**: `http://localhost:8000/api/docs/`
+
+**Features**:
+
+- **Interactive Testing**: Try API calls directly in the browser
+- **Authentication Setup**: Built-in JWT token authentication
+- **Request/Response Examples**: Live examples with sample data
+- **Parameter Documentation**: All query parameters explained
+- **Schema Validation**: Real-time request validation
+
+**How to Use**:
+
+1. Visit `http://localhost:8000/api/docs/`
+2. Click "Authorize" button to setup JWT authentication
+3. Login via `/api/auth/login/` to get your access token
+4. Copy the access token and paste it in the authorization modal
+5. Now you can test any endpoint with the "Try it out" button
+
+### ReDoc (Alternative)
+
+**URL**: `http://localhost:8000/api/redoc/`
+
+**Features**:
+
+- **Beautiful Design**: Clean, readable documentation layout
+- **Code Samples**: Multiple programming language examples
+- **Comprehensive Details**: Detailed parameter and response documentation
+- **Search Functionality**: Quickly find specific endpoints
+
+### OpenAPI Schema
+
+**URL**: `http://localhost:8000/api/schema/`
+
+**Purpose**: Raw OpenAPI 3.0 specification in YAML format **Use Cases**:
+
+- **Code Generation**: Generate client libraries for various languages
+- **API Testing**: Import into Postman, Insomnia, or other tools
+- **Documentation**: Generate custom documentation
+- **Validation**: Validate API requests and responses
+
+### Documentation Features
+
+#### Auto-Generated Content
+
+All documentation is automatically generated from your Django code:
+
+- **ViewSet docstrings** → Endpoint descriptions
+- **Serializer fields** → Request/response schemas
+- **@extend_schema decorators** → Enhanced parameter documentation
+- **Custom actions** → Special endpoint documentation
+
+#### Available Endpoints Documented
+
+**Authentication**:
+
+- `POST /api/auth/login/` - JWT token authentication
+- `POST /api/auth/refresh/` - Token refresh
+- `POST /api/auth/signup/` - User registration
+- `GET /api/auth/profile/` - User profile
+
+**Notes Management**:
+
+- `GET /api/notes/` - List notes with advanced filtering
+- `POST /api/notes/` - Create new note
+- `GET /api/notes/{id}/` - Get note details
+- `PATCH /api/notes/{id}/` - Update note
+- `DELETE /api/notes/{id}/` - Delete note
+- `POST /api/notes/{id}/toggle_pin/` - Pin/unpin note
+- `POST /api/notes/{id}/toggle_archive/` - Archive/unarchive note
+- `GET /api/notes/archived/` - List archived notes
+- `GET /api/notes/pinned/` - List pinned notes
+- `GET /api/notes/stats/` - User statistics
+
+**Categories Management**:
+
+- `GET /api/categories/` - List user categories
+- `POST /api/categories/` - Create new category
+- `GET /api/categories/{id}/` - Get category details
+- `PATCH /api/categories/{id}/` - Update category
+- `DELETE /api/categories/{id}/` - Delete category
+
+#### Advanced Features
+
+**Query Parameters Documentation**:
+
+- Search functionality across multiple fields
+- Filtering by category, priority, status
+- Ordering and pagination options
+- Tag-based filtering
+
+**Security Documentation**:
+
+- JWT authentication flow
+- User data isolation
+- Permission requirements
+- CORS configuration
+
+**Response Examples**:
+
+- Sample requests and responses
+- Error response formats
+- Status code explanations
+- Validation error details
+
+### Quick Start with Documentation
+
+1. **Start Django server**:
+   ```bash
+   cd backend
+   python manage.py runserver
+   ```
+
+2. **Access Swagger UI**:
+   - Open `http://localhost:8000/api/docs/`
+   - Click "Authorize" and enter your JWT token
+   - Test any endpoint with "Try it out"
+
+3. **Get Authentication Token**:
+   - Use `/api/auth/login/` endpoint in the docs
+   - Copy the `access` token from response
+   - Use it for subsequent API calls
+
+4. **Explore Endpoints**:
+   - Browse all available endpoints
+   - See request/response schemas
+   - Test with real data
+
+This interactive documentation provides a complete reference for the Notes
+Taking App API, making it easy for developers to understand and integrate with
+the backend services.
