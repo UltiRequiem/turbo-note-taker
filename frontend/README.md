@@ -77,12 +77,14 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 ## 📱 Application Features
 
 ### Authentication
+
 - User login and signup forms
 - JWT token management
 - Protected routes
 - Automatic redirects
 
 ### Notes Management
+
 - Create, read, update, delete notes
 - Rich text editing
 - Category assignment
@@ -91,11 +93,13 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 - Tag management
 
 ### Categories
+
 - Color-coded organization
 - CRUD operations
 - Default categories for new users
 
 ### User Experience
+
 - Responsive design
 - Auto-save functionality
 - Optimistic updates
@@ -105,14 +109,18 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 ## 🧩 Key Components
 
 ### Dashboard (`src/app/dashboard/page.tsx`)
+
 Main application interface handling:
+
 - State management
 - API integration
 - Component orchestration
 - User interactions
 
 ### NoteEditor (`src/components/NoteEditor.tsx`)
+
 Note editing interface with:
+
 - Form validation
 - Real-time updates
 - Category selection
@@ -120,7 +128,9 @@ Note editing interface with:
 - Auto-save
 
 ### NotesList (`src/components/NotesList.tsx`)
+
 Notes display component featuring:
+
 - Note cards with previews
 - Action buttons (pin, archive, delete)
 - Date formatting
@@ -128,14 +138,18 @@ Notes display component featuring:
 - Responsive grid layout
 
 ### CategoryManager (`src/components/CategoryManager.tsx`)
+
 Category management modal with:
+
 - Create/edit categories
 - Color picker
 - Delete confirmation
 - Form validation
 
 ### Sidebar (`src/components/Sidebar.tsx`)
+
 Navigation component showing:
+
 - Category list
 - Note counts
 - Filter options
@@ -166,19 +180,23 @@ bun run format
 ## 🎯 API Integration
 
 ### Authentication Flow
+
 1. Login/signup forms
 2. JWT token storage
 3. Automatic token attachment
 4. Token refresh handling
 
 ### Data Management
+
 - Optimistic updates
 - Error handling
 - Loading states
 - Cache invalidation
 
 ### API Client (`src/lib/api.ts`)
+
 Centralized HTTP client with:
+
 - Axios configuration
 - Request/response interceptors
 - Token management
@@ -187,12 +205,14 @@ Centralized HTTP client with:
 ## 🎨 Styling
 
 ### Tailwind CSS
+
 - Utility-first CSS framework
 - Responsive design system
 - Custom color scheme
 - Component classes
 
 ### Design System
+
 - Consistent spacing
 - Color palette
 - Typography scale
@@ -201,13 +221,16 @@ Centralized HTTP client with:
 ## 🔍 TypeScript
 
 ### Type Definitions (`src/types/index.ts`)
+
 Shared interfaces for:
+
 - User data
 - Notes structure
 - Categories
 - API responses
 
 ### Type Safety
+
 - Strict TypeScript configuration
 - API response typing
 - Component prop validation
@@ -216,12 +239,14 @@ Shared interfaces for:
 ## 🚀 Performance
 
 ### Next.js Optimizations
+
 - Static generation where possible
 - Code splitting
 - Image optimization
 - Font optimization
 
 ### User Experience
+
 - Optimistic updates
 - Loading states
 - Error boundaries
@@ -247,6 +272,7 @@ bun run test
 ## 🚀 Deployment
 
 ### Build Process
+
 ```bash
 # Production build
 bun run build
@@ -256,6 +282,7 @@ bun run start
 ```
 
 ### Environment Variables
+
 ```env
 NEXT_PUBLIC_API_URL=https://your-api-domain.com
 ```

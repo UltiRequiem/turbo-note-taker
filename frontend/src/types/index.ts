@@ -66,3 +66,30 @@ export interface NotesStats {
   archived_notes: number;
   categories_count: number;
 }
+
+// Authentication types
+export interface User {
+  id: number;
+  email: string;
+}
+
+export interface AuthTokens {
+  access: string;
+  refresh: string;
+}
+
+export interface LoginResponse extends AuthTokens {
+  user?: User;
+}
+
+export interface SignupResponse extends AuthTokens {
+  user: User;
+}
+
+export interface ProfileResponse {
+  user: User;
+}
+
+export interface RefreshTokenResponse {
+  access: string;
+}

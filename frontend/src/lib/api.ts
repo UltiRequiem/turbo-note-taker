@@ -1,11 +1,16 @@
 import axios from "axios";
-import {
-  Note,
+
+import type {
   Category,
-  CreateNoteData,
-  UpdateNoteData,
   CreateCategoryData,
+  CreateNoteData,
+  LoginResponse,
+  Note,
   NotesStats,
+  ProfileResponse,
+  RefreshTokenResponse,
+  SignupResponse,
+  UpdateNoteData,
 } from "@/types";
 
 const API_BASE_URL =
@@ -163,28 +168,64 @@ export const notesApi = {
 
 // Authentication API
 export const authApi = {
-  login: async (email: string, password: string) => {
-    const response = await axios.post(`${API_BASE_URL}/api/auth/login/`, {
-      username: email,
-      password: password,
-    });
+  /**
+   * Login with email and password
+   * @returns JWT tokens (access and refresh)
+   */
+  login: async (email: string, password: string): Promise<LoginResponse> => {
+    const response = await axios.post<LoginResponse>(
+      `${API_BASE_URL}/api/auth/login/`,
+      {
+        username: email,
+        password,
+      }
+    );
     return response.data;
   },
 
-  signup: async (email: string, password: string) => {
-    const response = await axios.post(`${API_BASE_URL}/api/auth/signup/`, {
-      email: email,
-      password: password,
-    });
+  /**
+   * Sign up a new user
+   * @returns JWT tokens and user information
+   */
+  signup: async (email: string, password: string): Promise<SignupResponse> => {
+    const response = await axios.post<SignupResponse>(
+      `${API_BASE_URL}/api/auth/signup/`,
+      {
+        email,
+        password,
+      }
+    );
     return response.data;
   },
 
-  getProfile: async () => {
-    const response = await api.get("/auth/profile/");
+  /**
+   * Refresh access token using refresh token
+   * @param refreshToken - The refresh token
+   * @returns New access token
+   */
+  refresh: async (refreshToken: string): Promise<RefreshTokenResponse> => {
+    const response = await axios.post<RefreshTokenResponse>(
+      `${API_BASE_URL}/api/auth/refresh/`,
+      {
+        refresh: refreshToken,
+      }
+    );
     return response.data;
   },
 
-  logout: () => {
+  /**
+   * Get current user profile
+   * @returns User profile information
+   */
+  getProfile: async (): Promise<ProfileResponse> => {
+    const response = await api.get<ProfileResponse>("/auth/profile/");
+    return response.data;
+  },
+
+  /**
+   * Logout and clear stored tokens
+   */
+  logout: (): void => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
   },

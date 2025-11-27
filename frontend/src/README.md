@@ -15,13 +15,16 @@ src/
 ## 🎯 Architecture Overview
 
 ### Next.js App Router
+
 Using Next.js 14 with the modern App Router for:
+
 - **File-based Routing**: Automatic route generation from file structure
 - **Layout System**: Shared layouts and nested routing
 - **Server Components**: Optimized rendering and performance
 - **TypeScript Integration**: Full type safety across the application
 
 ### Component Structure
+
 - **Page Components**: Route-specific components in `app/` directory
 - **Shared Components**: Reusable UI components in `components/` directory
 - **Layout Components**: Shared layouts for consistent structure
@@ -30,16 +33,19 @@ Using Next.js 14 with the modern App Router for:
 ## 🔧 Technology Stack
 
 ### Core Framework
+
 - **Next.js 14**: React framework with App Router
 - **React 18**: Component library with latest features
 - **TypeScript**: Static typing for better development experience
 
 ### Styling
+
 - **Tailwind CSS**: Utility-first CSS framework
 - **PostCSS**: CSS processing and optimization
 - **Responsive Design**: Mobile-first approach
 
 ### State Management
+
 - **React Hooks**: Built-in state management
 - **Custom Hooks**: Reusable stateful logic
 - **Context API**: Global state for authentication
@@ -48,19 +54,21 @@ Using Next.js 14 with the modern App Router for:
 ## 📊 Data Flow
 
 ### API Integration
+
 - **Axios Client**: HTTP client for API communication
 - **JWT Authentication**: Token-based authentication with automatic refresh
 - **Error Handling**: Comprehensive error management and user feedback
 - **Loading States**: Progressive loading and skeleton screens
 
 ### State Management Pattern
+
 ```typescript
 // Local component state
 const [notes, setNotes] = useState<Note[]>([]);
 
 // API calls with error handling
 try {
-  const response = await api.get('/notes/');
+  const response = await api.get("/notes/");
   setNotes(response.data.results);
 } catch (error) {
   handleError(error);
@@ -69,9 +77,9 @@ try {
 // Optimistic updates
 const handleUpdate = (id: number, updates: Partial<Note>) => {
   // Update UI immediately
-  setNotes(prev => prev.map(note =>
-    note.id === id ? { ...note, ...updates } : note
-  ));
+  setNotes((prev) =>
+    prev.map((note) => (note.id === id ? { ...note, ...updates } : note))
+  );
 
   // Sync with backend
   api.patch(`/notes/${id}/`, updates);
@@ -81,12 +89,14 @@ const handleUpdate = (id: number, updates: Partial<Note>) => {
 ## 🎨 Component Design
 
 ### Design System
+
 - **Consistent Styling**: Standardized components with Tailwind classes
 - **Color Palette**: Category-based color coding throughout the UI
 - **Typography**: Consistent font sizes and weights
 - **Spacing**: Uniform spacing system using Tailwind utilities
 
 ### Component Patterns
+
 - **Composition**: Components built from smaller, focused components
 - **Props Interface**: Clear TypeScript interfaces for all props
 - **Event Handling**: Consistent event handling patterns
@@ -95,12 +105,14 @@ const handleUpdate = (id: number, updates: Partial<Note>) => {
 ## 🔒 Security Implementation
 
 ### Authentication
+
 - **JWT Tokens**: Secure token storage and management
 - **Route Protection**: Protected routes for authenticated users
 - **Automatic Logout**: Token expiry handling
 - **Secure Storage**: Proper token storage practices
 
 ### Data Validation
+
 - **Input Validation**: Client-side validation for user inputs
 - **Type Safety**: TypeScript ensures type correctness
 - **XSS Prevention**: Safe rendering of user-generated content
@@ -109,12 +121,14 @@ const handleUpdate = (id: number, updates: Partial<Note>) => {
 ## 📱 Responsive Design
 
 ### Mobile-First Approach
+
 - **Breakpoint System**: Tailwind responsive utilities
 - **Touch-Friendly**: Large touch targets for mobile devices
 - **Performance**: Optimized for mobile networks
 - **Progressive Enhancement**: Works across all device types
 
 ### Layout Adaptations
+
 - **Desktop**: Three-panel layout (sidebar, notes list, editor)
 - **Tablet**: Collapsible sidebar with adaptive layout
 - **Mobile**: Single-panel navigation with modal editor
@@ -122,12 +136,14 @@ const handleUpdate = (id: number, updates: Partial<Note>) => {
 ## 🚀 Performance Optimization
 
 ### Next.js Features
+
 - **Code Splitting**: Automatic code splitting for optimal loading
 - **Image Optimization**: Next.js Image component for performance
 - **Static Generation**: Pre-rendered pages where possible
 - **Bundle Analysis**: Webpack bundle analyzer for optimization
 
 ### React Optimizations
+
 - **Memoization**: React.memo for expensive components
 - **Lazy Loading**: Dynamic imports for large components
 - **Virtual Scrolling**: Efficient rendering of large lists (future)
@@ -136,12 +152,14 @@ const handleUpdate = (id: number, updates: Partial<Note>) => {
 ## 🧪 Testing Strategy
 
 ### Testing Approach
+
 - **Component Testing**: Individual component functionality
 - **Integration Testing**: Component interaction testing
 - **E2E Testing**: Full user workflow testing
 - **Type Testing**: TypeScript compilation as tests
 
 ### Testing Tools (Future Implementation)
+
 - **Jest**: Unit testing framework
 - **React Testing Library**: Component testing utilities
 - **Cypress**: End-to-end testing
@@ -150,12 +168,14 @@ const handleUpdate = (id: number, updates: Partial<Note>) => {
 ## 🔧 Development Workflow
 
 ### Code Quality
+
 - **TypeScript**: Strict type checking
 - **ESLint**: Code linting and style enforcement
 - **Prettier**: Automatic code formatting
 - **Pre-commit Hooks**: Quality checks before commits
 
 ### Development Tools
+
 - **Hot Reload**: Instant feedback during development
 - **Error Boundaries**: Graceful error handling
 - **DevTools**: React and Redux DevTools integration

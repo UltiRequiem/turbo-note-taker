@@ -18,12 +18,14 @@ app/
 ## 🚀 Next.js App Router Features
 
 ### File-based Routing
+
 - **Automatic Routes**: Each folder becomes a route
 - **Nested Routing**: Folder hierarchy creates nested routes
 - **Layout System**: Shared layouts across route groups
 - **Loading States**: Built-in loading UI support
 
 ### Route Structure
+
 - `/` - Landing page (redirects to appropriate auth/dashboard)
 - `/auth/login` - User login page
 - `/auth/signup` - User registration page
@@ -32,6 +34,7 @@ app/
 ## 🎨 Layout System
 
 ### Root Layout (`layout.tsx`)
+
 ```typescript
 export default function RootLayout({
   children,
@@ -51,13 +54,16 @@ export default function RootLayout({
 ```
 
 **Features**:
+
 - Global font loading (Inter)
 - Base styling and CSS imports
 - Consistent HTML structure
 - Accessibility attributes
 
 ### Page Components
+
 Each route contains a `page.tsx` file that serves as the route component:
+
 - **Server Components**: By default for better performance
 - **Client Components**: When interactivity is needed (`"use client"`)
 - **TypeScript**: Full type safety for props and state
@@ -65,16 +71,18 @@ Each route contains a `page.tsx` file that serves as the route component:
 ## 🔐 Authentication Flow
 
 ### Landing Page Logic (`page.tsx`)
+
 ```typescript
 // Redirect logic based on authentication status
 if (isAuthenticated) {
-  redirect('/dashboard');
+  redirect("/dashboard");
 } else {
-  redirect('/auth/signup');
+  redirect("/auth/signup");
 }
 ```
 
 ### Auth Pages
+
 - **Signup First**: New users see signup by default
 - **Login Available**: Easy navigation to login from signup
 - **Form Validation**: Client-side and server-side validation
@@ -83,6 +91,7 @@ if (isAuthenticated) {
 ## 📱 Dashboard Layout
 
 ### Main Application Structure
+
 ```typescript
 // dashboard/page.tsx - Three-panel layout
 <div className="flex h-screen">
@@ -93,6 +102,7 @@ if (isAuthenticated) {
 ```
 
 ### Responsive Behavior
+
 - **Desktop**: Full three-panel layout
 - **Tablet**: Collapsible sidebar
 - **Mobile**: Single-panel with navigation modals
@@ -100,12 +110,14 @@ if (isAuthenticated) {
 ## 🎯 Page-Specific Features
 
 ### Authentication Pages
+
 - **Form Handling**: React Hook Form integration
 - **Validation**: Real-time validation feedback
 - **Loading States**: Spinner and disabled states during submission
 - **Password Toggle**: Show/hide password functionality
 
 ### Dashboard Page
+
 - **State Management**: Complex state for notes, categories, filters
 - **Real-time Updates**: Optimistic updates with backend sync
 - **Search and Filter**: Advanced filtering and search functionality
@@ -114,6 +126,7 @@ if (isAuthenticated) {
 ## 🔧 Global Styles (`globals.css`)
 
 ### Tailwind Configuration
+
 ```css
 @tailwind base;
 @tailwind components;
@@ -129,12 +142,13 @@ if (isAuthenticated) {
 @layer components {
   /* Reusable component classes */
   .btn-primary {
-    @apply bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600;
+    @apply rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600;
   }
 }
 ```
 
 ### Design System
+
 - **Color Palette**: Category-based colors and neutral grays
 - **Typography**: Consistent font hierarchy
 - **Spacing**: Standardized spacing scale
@@ -143,11 +157,13 @@ if (isAuthenticated) {
 ## 🚀 Performance Considerations
 
 ### Server Components
+
 - **Default Behavior**: Server-side rendering for better performance
 - **Data Fetching**: Server-side data fetching where appropriate
 - **SEO Optimization**: Better search engine optimization
 
 ### Client Components
+
 - **Minimal Usage**: Only when interactivity is required
 - **Code Splitting**: Automatic code splitting for client components
 - **Hydration**: Efficient client-side hydration
@@ -155,14 +171,16 @@ if (isAuthenticated) {
 ## 🔍 SEO and Metadata
 
 ### Page Metadata
+
 ```typescript
 export const metadata: Metadata = {
-  title: 'Notes App - Personal Note Taking',
-  description: 'Organize your thoughts with categories and tags',
-}
+  title: "Notes App - Personal Note Taking",
+  description: "Organize your thoughts with categories and tags",
+};
 ```
 
 ### Dynamic Metadata
+
 - **Title Updates**: Page titles reflect current state
 - **Description**: Contextual descriptions for each page
 - **Open Graph**: Social media sharing optimization
@@ -170,16 +188,18 @@ export const metadata: Metadata = {
 ## 🧭 Navigation Patterns
 
 ### Programmatic Navigation
+
 ```typescript
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 const router = useRouter();
 
 // Navigate to dashboard after successful login
-router.push('/dashboard');
+router.push("/dashboard");
 ```
 
 ### Link Components
+
 ```typescript
 import Link from 'next/link';
 
@@ -191,11 +211,13 @@ import Link from 'next/link';
 ## 🔧 Development Workflow
 
 ### Hot Reload
+
 - **Fast Refresh**: Instant updates during development
 - **State Preservation**: Component state preserved across updates
 - **Error Overlay**: Clear error messages and debugging info
 
 ### TypeScript Integration
+
 - **Type Safety**: Full type checking for all components
 - **IntelliSense**: Rich IDE support with autocompletion
 - **Error Prevention**: Compile-time error catching

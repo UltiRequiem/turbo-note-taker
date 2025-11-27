@@ -42,7 +42,7 @@ export default function DashboardPage() {
       setCategories(categoriesResponse);
 
       if (profileResponse) {
-        setUserEmail(profileResponse.email);
+        setUserEmail(profileResponse.user.email);
       }
     } catch (error) {
       console.error("Error loading data:", error);
