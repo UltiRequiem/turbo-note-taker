@@ -1,12 +1,11 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from drf_spectacular.utils import extend_schema, OpenApiExample
-from rest_framework import status
+from drf_spectacular.utils import OpenApiExample, extend_schema
+from rest_framework import serializers, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework import serializers
 
 from .models import Category
 
@@ -18,7 +17,9 @@ class LoginRequestSerializer(serializers.Serializer):
 
 class SignupRequestSerializer(serializers.Serializer):
     email = serializers.EmailField(help_text="User's email address")
-    password = serializers.CharField(min_length=8, help_text="User's password (minimum 8 characters)")
+    password = serializers.CharField(
+        min_length=8, help_text="User's password (minimum 8 characters)"
+    )
 
 
 class AuthResponseSerializer(serializers.Serializer):
@@ -31,32 +32,26 @@ class AuthResponseSerializer(serializers.Serializer):
     request=LoginRequestSerializer,
     responses={
         200: AuthResponseSerializer,
-        400: {"description": "Invalid credentials"}
+        400: {"description": "Invalid credentials"},
     },
     summary="User Login",
     description="Authenticate user with email and password and return JWT tokens.",
     examples=[
         OpenApiExample(
             "Login Request",
-            value={
-                "email": "user@example.com",
-                "password": "password123"
-            },
-            request_only=True
+            value={"email": "user@example.com", "password": "password123"},
+            request_only=True,
         ),
         OpenApiExample(
             "Login Response",
             value={
                 "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
                 "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
-                "user": {
-                    "id": 1,
-                    "email": "user@example.com"
-                }
+                "user": {"id": 1, "email": "user@example.com"},
             },
-            response_only=True
-        )
-    ]
+            response_only=True,
+        ),
+    ],
 )
 @api_view(["POST"])
 @permission_classes([AllowAny])
@@ -99,32 +94,26 @@ def login(request):
     request=SignupRequestSerializer,
     responses={
         201: AuthResponseSerializer,
-        400: {"description": "Bad request - missing or invalid data"}
+        400: {"description": "Bad request - missing or invalid data"},
     },
     summary="User Registration",
     description="Register a new user account with email and password. Creates default categories for the user.",
     examples=[
         OpenApiExample(
             "Signup Request",
-            value={
-                "email": "user@example.com",
-                "password": "password123"
-            },
-            request_only=True
+            value={"email": "user@example.com", "password": "password123"},
+            request_only=True,
         ),
         OpenApiExample(
             "Signup Response",
             value={
                 "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
                 "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
-                "user": {
-                    "id": 1,
-                    "email": "user@example.com"
-                }
+                "user": {"id": 1, "email": "user@example.com"},
             },
-            response_only=True
-        )
-    ]
+            response_only=True,
+        ),
+    ],
 )
 @api_view(["POST"])
 @permission_classes([AllowAny])
@@ -182,7 +171,7 @@ class UserProfileResponseSerializer(serializers.Serializer):
 @extend_schema(
     responses={200: UserProfileResponseSerializer},
     summary="Get User Profile",
-    description="Get the authenticated user's profile information."
+    description="Get the authenticated user's profile information.",
 )
 @api_view(["GET"])
 def user_profile(request):
