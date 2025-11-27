@@ -51,7 +51,7 @@ api.interceptors.response.use(
           // Retry the original request
           error.config.headers.Authorization = `Bearer ${newToken}`;
           return api.request(error.config);
-        } catch (refreshError) {
+        } catch (_refreshError) {
           // Refresh failed, redirect to login
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");

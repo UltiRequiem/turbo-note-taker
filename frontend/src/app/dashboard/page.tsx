@@ -6,10 +6,11 @@ import NoteEditor from "@/components/NoteEditor";
 import NotesList from "@/components/NotesList";
 import Sidebar from "@/components/Sidebar";
 import { authApi, categoriesApi, notesApi } from "@/lib/api";
-import { Category, Note } from "@/types";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+
+import type { Category, Note } from "@/types";
 
 export default function DashboardPage() {
   const router = useRouter();

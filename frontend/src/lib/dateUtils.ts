@@ -24,15 +24,17 @@ export function formatNoteDate(dateString: string): string {
 
   if (diffDays === 0) {
     return "today";
-  } else if (diffDays === 1) {
-    return "yesterday";
-  } else {
-    // Format as "MMM DD"
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-    });
   }
+
+  if (diffDays === 1) {
+    return "yesterday";
+  }
+
+  // Format as "MMM DD"
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+  });
 }
 
 /**
