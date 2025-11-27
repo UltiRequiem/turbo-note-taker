@@ -20,7 +20,7 @@ interface NoteEditorProps {
   isEditing: boolean;
   onStartEditing: () => void;
   onStopEditing: () => void;
-  onUpdateNote: (id: number, updates: Partial<Note>) => void;
+  onUpdateNote: (id: number, updates: Partial<Note>) => Promise<void>;
 }
 
 export default function NoteEditor({
@@ -37,6 +37,7 @@ export default function NoteEditor({
   const [categoryId, setCategoryId] = useState<number | null>(null);
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     if (note) {
@@ -48,17 +49,25 @@ export default function NoteEditor({
     }
   }, [note]);
 
-  const handleSave = () => {
-    if (!note) return;
+  const handleSave = async () => {
+    if (!note || isSaving) return;
 
-    onUpdateNote(note.id, {
-      title: title?.trim() || "Untitled",
-      content: content?.trim() || "",
-      priority,
-      category: categoryId,
-      tag_list: tags,
-    });
-    onStopEditing();
+    setIsSaving(true);
+    try {
+      await onUpdateNote(note.id, {
+        title: title?.trim() || "Untitled",
+        content: content?.trim() || "",
+        priority,
+        category: categoryId,
+        tag_list: tags,
+      });
+      onStopEditing();
+    } catch (error) {
+      console.error("Error saving note:", error);
+      // Keep editing mode active on error
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleCancel = () => {
@@ -153,11 +162,13 @@ export default function NoteEditor({
             {isEditing ? (
               <>
                 <button
+                  type="button"
                   onClick={handleSave}
-                  className="inline-flex items-center rounded border border-transparent bg-green-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-green-700"
+                  disabled={isSaving}
+                  className="inline-flex items-center rounded border border-transparent bg-green-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <CheckIcon className="mr-1 h-4 w-4" />
-                  Save
+                  {isSaving ? "Saving..." : "Save"}
                 </button>
                 <button
                   onClick={handleCancel}
@@ -179,14 +190,6 @@ export default function NoteEditor({
           </div>
         </div>
 
-        {/* Last edited timestamp */}
-        {note && (
-          <div className="px-6 pb-2">
-            <p className="text-xs text-gray-500">
-              Last edited: {formatFullTimestamp(note.updated_at)}
-            </p>
-          </div>
-        )}
       </div>
 
       {/* Content */}

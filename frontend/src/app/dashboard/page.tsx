@@ -39,6 +39,9 @@ export default function DashboardPage() {
           authApi.getProfile().catch(() => null), // Don't fail if profile fails
         ]);
 
+      console.log("FRONTEND: Raw API response:", notesResponse);
+      console.log("FRONTEND: First note content:", notesResponse.results[0]?.content);
+
       // Sort notes with pinned ones first, then by updated_at descending
       const sortedNotes = notesResponse.results.sort((a, b) => {
         if (a.is_pinned !== b.is_pinned) {
@@ -117,6 +120,7 @@ export default function DashboardPage() {
     } catch (error) {
       console.error("Error updating note:", error);
       toast.error("Failed to update note");
+      throw error; // Re-throw to let NoteEditor handle it
     }
   };
 

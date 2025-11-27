@@ -148,6 +148,13 @@ class NoteViewSet(viewsets.ModelViewSet):
             return NoteListSerializer
         return NoteSerializer
 
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, *args, **kwargs)
+        print(f"LIST API: Returning {len(response.data.get('results', []))} notes")
+        for note in response.data.get('results', [])[:2]:  # Show first 2 notes
+            print(f"LIST API: Note {note.get('id')}: title='{note.get('title')}', content='{note.get('content', 'NOT_PRESENT')[:50]}...'")
+        return response
+
     def get_queryset(self):
         queryset = Note.objects.filter(user=self.request.user)
 
@@ -177,6 +184,7 @@ class NoteViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
 
     @extend_schema(
         summary="Toggle note pin status",

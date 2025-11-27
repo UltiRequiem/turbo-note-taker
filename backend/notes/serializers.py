@@ -84,6 +84,7 @@ class NoteListSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "title",
+            "content",
             "category",
             "category_name",
             "category_color",
