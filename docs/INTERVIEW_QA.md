@@ -56,8 +56,8 @@ responsive UI design.
 
 **A:**
 
-- **MVC Pattern**: Django's Model-View-Template (using React instead of
-  templates)
+- **Client-Backend Architecture**: Decoupled frontend and backend applications
+  communicating via REST APIs
 - **Repository Pattern**: Django ORM acts as the repository layer
 - **Serializer Pattern**: DRF serializers handle data transformation
 - **Middleware Pattern**: CORS, authentication, and request processing
