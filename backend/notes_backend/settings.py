@@ -164,7 +164,7 @@ CORS_ALLOW_CREDENTIALS = True
 # Allow all origins during development (remove in production)
 CORS_ALLOW_ALL_ORIGINS = True
 
-# Allow all HTTP methods
+# Allow all HTTP methods - using default list from django-cors-headers
 CORS_ALLOW_METHODS = [
     "DELETE",
     "GET",
@@ -174,7 +174,7 @@ CORS_ALLOW_METHODS = [
     "PUT",
 ]
 
-# Allow all headers
+# Allow all headers - using default list from django-cors-headers
 CORS_ALLOW_HEADERS = [
     "accept",
     "accept-encoding",
@@ -186,6 +186,15 @@ CORS_ALLOW_HEADERS = [
     "x-csrftoken",
     "x-requested-with",
 ]
+
+# Expose these headers to the browser
+CORS_EXPOSE_HEADERS = [
+    "content-type",
+    "x-csrftoken",
+]
+
+# Maximum age for CORS preflight cache
+CORS_PREFLIGHT_MAX_AGE = 86400
 
 # drf-spectacular settings for API documentation
 SPECTACULAR_SETTINGS = {
