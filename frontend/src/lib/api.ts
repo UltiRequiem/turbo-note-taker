@@ -87,7 +87,7 @@ export const categoriesApi = {
     id: number,
     data: Partial<CreateCategoryData>
   ): Promise<Category> => {
-    const response = await api.patch(`/categories/${id}/`, data);
+    const response = await api.put(`/categories/${id}/`, data);
     return response.data;
   },
 
@@ -128,7 +128,7 @@ export const notesApi = {
   },
 
   update: async (id: number, data: UpdateNoteData): Promise<Note> => {
-    const response = await api.patch(`/notes/${id}/`, data);
+    const response = await api.put(`/notes/${id}/`, data);
     return response.data;
   },
 

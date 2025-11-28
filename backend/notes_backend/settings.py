@@ -193,8 +193,11 @@ CORS_EXPOSE_HEADERS = [
     "x-csrftoken",
 ]
 
-# Maximum age for CORS preflight cache
-CORS_PREFLIGHT_MAX_AGE = 86400
+# Maximum age for CORS preflight cache (set to 0 during development to avoid caching issues)
+CORS_PREFLIGHT_MAX_AGE = 0
+
+# Additional CORS settings to ensure proper configuration
+CORS_ALLOW_PRIVATE_NETWORK = True
 
 # drf-spectacular settings for API documentation
 SPECTACULAR_SETTINGS = {
